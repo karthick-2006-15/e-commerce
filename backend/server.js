@@ -23,6 +23,30 @@ app.use(mongoSanitize());
 app.use(morgan('dev'));
 
 // ─── Routes (registered ONCE) ────────────────────────────────
+const User = require('./models/User');
+const bcrypt = require('bcryptjs');
+
+// Auto-create default admin user if none exists
+async function setupDefaultAdmin() {
+  try {
+    const adminExists = await User.findOne({ role: 'admin' });
+    if (!adminExists) {
+      const hashedPassword = await bcrypt.hash('admin123', 10);
+      await User.create({
+        name: 'Super Admin',
+        email: 'admin@swamybakery.com',
+        phone: '9999999999',
+        password: hashedPassword,
+        role: 'admin'
+      });
+      console.log('✅ Default Admin created (admin@swamybakery.com / admin123)');
+    }
+  } catch (err) {
+    console.error('Error creating default admin:', err.message);
+  }
+}
+mongoose.connection.once('open', setupDefaultAdmin);
+
 app.use('/api/coupons',    require('./routes/coupons'));
 app.use('/api/categories', require('./routes/categories'));
 app.use('/api/products',   require('./routes/products'));
