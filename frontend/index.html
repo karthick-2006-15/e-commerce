@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Swamy Bakery — Freshly Baked Happiness, Delivered</title>
+<meta name="description" content="Swamy Bakery — Premium fresh-baked snacks, sweets and cakes. Order online for home delivery in Kanyakumari. Authentic Indian flavours since 2000."/>
+<meta name="theme-color" content="#4A2C0F"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400;1,600&family=DM+Sans:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@1,600&display=swap" rel="stylesheet"/>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+
+<!-- STICKY BOTTOM BAR (mobile only) -->
+<div class="sticky-bottom-bar" id="stickyBar">
+  <button class="sbb-cart" onclick="navigate('cart')">
+    <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+    Cart
+    <span class="sbb-cart-badge" id="sbbBadge">0</span>
+  </button>
+  <button class="sbb-order" onclick="navigate('shop')">🛒 Order Now</button>
+</div>
+
+<nav class="nav" id="mainNav">
+  <div class="nav-inner">
+    <div class="nav-logo" onclick="navigate('home')">
+      <div class="nav-logo-icon">🍪</div>
+      <div class="nav-logo-text">Swamy Bakery<span>Est. 2000 · Kanyakumari</span></div>
+    </div>
+    <ul class="nav-links">
+      <li><a onclick="navigate('home')" id="nav-home">Home</a></li>
+      <li><a onclick="navigate('shop')" id="nav-shop">Shop</a></li>
+      <li><a onclick="navigate('about')" id="nav-about">About Us</a></li>
+      <li><a onclick="navigate('contact')" id="nav-contact">Contact</a></li>
+      <li><a onclick="navigate('myorders')" id="nav-myorders">My Orders</a></li>
+    </ul>
+    <div class="nav-actions">
+      <div class="nav-icon-btn" onclick="handleLoginClick()" title="Login / My Account" id="loginBtn">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+      </div>
+      <div class="nav-icon-btn" onclick="navigate('wishlist')" title="Wishlist">
+        <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+      </div>
+      <div class="nav-icon-btn" onclick="navigate('cart')" title="Cart" style="position:relative">
+        <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        <span class="cart-badge" id="cartBadge">0</span>
+      </div>
+      <div class="hamburger" onclick="toggleMobileMenu()"><span></span><span></span><span></span></div>
+    </div>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a onclick="navigate('home');closeMobileMenu()">🏠 Home</a>
+  <a onclick="navigate('shop');closeMobileMenu()">🛒 Shop</a>
+  <a onclick="navigate('about');closeMobileMenu()">📖 About Us</a>
+  <a onclick="navigate('contact');closeMobileMenu()">📞 Contact</a>
+  <a onclick="navigate('myorders');closeMobileMenu()">📦 My Orders</a>
+  <a onclick="handleLoginClick();closeMobileMenu()">👤 Login / Sign Up</a>
+</div>
+
+<!-- HOME -->
+<div class="page active" id="page-home">
+  <section class="hero">
+    <div class="hero-orb"></div>
+    <div class="hero-orb"></div>
+    <div class="hero-inner">
+      <div>
+        <div class="hero-eyebrow">Freshly baked happiness, delivered to your door</div>
+        <h1 class="hero-title">Crunchy, Spicy &<br><em>Irresistible</em> Snacks<br>Delivered</h1>
+        <p class="hero-desc">Handcrafted snacks made fresh every morning. From crispy murukku to creamy sweets — authentic Indian flavours from our kitchen to your door.</p>
+        <div class="hero-actions">
+          <button class="btn-primary" onclick="navigate('shop')">Shop Now →</button>
+          <button class="btn-outline" onclick="navigate('about')">Our Story</button>
+        </div>
+        <div class="hero-stats">
+          <div class="hero-stat"><strong>50K+</strong><span>Happy Customers</span></div>
+          <div class="hero-stat-divider"></div>
+          <div class="hero-stat"><strong>80+</strong><span>Snack Varieties</span></div>
+          <div class="hero-stat-divider"></div>
+          <div class="hero-stat"><strong>25 Yrs</strong><span>Since 2000</span></div>
+        </div>
+      </div>
+      <div class="hero-image-wrap">
+        <div class="hero-image-card">
+          <img src="https://images.pexels.com/photos/9191924/pexels-photo-9191924.jpeg" alt="Assorted Indian Snacks" loading="lazy" onerror="this.parentElement.style.background='var(--cream2)'"/>
+        </div>
+        <div class="hero-float-card card-1">
+          <div class="icon">🚚</div>
+          <div><strong>Free Delivery</strong><span>Above ₹499</span></div>
+        </div>
+        <div class="hero-float-card card-2">
+          <div class="icon">⭐</div>
+          <div>
+            <div class="hero-rating-stars">★★★★★</div>
+            <strong>4.9 / 5.0</strong>
+            <span>2,400+ reviews</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-cream2">
+    <div class="section-inner">
+      <div class="section-header">
+        <div class="section-eyebrow">Browse</div>
+        <h2 class="section-title">Our Snack Categories</h2>
+        <p class="section-sub">From crunchy murukku to festive sweets — discover every flavour we offer</p>
+      </div>
+      <div class="categories-grid" id="homeCategories"></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-inner">
+      <div class="section-header">
+        <div class="section-eyebrow">Best Sellers</div>
+        <h2 class="section-title">Fresh From Our Kitchen Today</h2>
+        <p class="section-sub">Every snack made fresh in small batches each morning — taste the difference</p>
+      </div>
+      <div class="products-grid" id="featuredProducts">
+        <div style="background:var(--white);border-radius:var(--r-lg);overflow:hidden"><div class="skeleton" style="aspect-ratio:1"></div><div style="padding:1.3rem"><div class="skeleton" style="height:12px;width:50%;margin-bottom:8px"></div><div class="skeleton" style="height:18px;margin-bottom:8px"></div><div class="skeleton" style="height:12px;width:35%"></div></div></div>
+        <div style="background:var(--white);border-radius:var(--r-lg);overflow:hidden"><div class="skeleton" style="aspect-ratio:1"></div><div style="padding:1.3rem"><div class="skeleton" style="height:12px;width:50%;margin-bottom:8px"></div><div class="skeleton" style="height:18px;margin-bottom:8px"></div><div class="skeleton" style="height:12px;width:35%"></div></div></div>
+        <div style="background:var(--white);border-radius:var(--r-lg);overflow:hidden"><div class="skeleton" style="aspect-ratio:1"></div><div style="padding:1.3rem"><div class="skeleton" style="height:12px;width:50%;margin-bottom:8px"></div><div class="skeleton" style="height:18px;margin-bottom:8px"></div><div class="skeleton" style="height:12px;width:35%"></div></div></div>
+        <div style="background:var(--white);border-radius:var(--r-lg);overflow:hidden"><div class="skeleton" style="aspect-ratio:1"></div><div style="padding:1.3rem"><div class="skeleton" style="height:12px;width:50%;margin-bottom:8px"></div><div class="skeleton" style="height:18px;margin-bottom:8px"></div><div class="skeleton" style="height:12px;width:35%"></div></div></div>
+      </div>
+      <div style="text-align:center;margin-top:3rem"><button class="btn-primary" onclick="navigate('shop')">View All Snacks →</button></div>
+    </div>
+  </section>
+
+  <section class="section bg-cream2">
+    <div class="section-inner">
+      <div class="section-header">
+        <div class="section-eyebrow">Why Choose Us</div>
+        <h2 class="section-title">The Swamy Difference</h2>
+        <p class="section-sub">Quality, trust and authentic taste — baked into everything we do</p>
+      </div>
+      <div class="values-grid">
+        <div class="value-card"><div class="value-icon">🌾</div><h3>Pure Ingredients</h3><p>No preservatives, no artificial flavours. Only the finest natural ingredients sourced fresh daily.</p></div>
+        <div class="value-card"><div class="value-icon">🏭</div><h3>Hygienic Kitchen</h3><p>FSSAI certified facility with daily sanitisation and stringent quality checks at every step.</p></div>
+        <div class="value-card"><div class="value-icon">🚚</div><h3>Same Day Delivery</h3><p>Order before 12 PM for same-day delivery. Fresh from kitchen to your door, guaranteed.</p></div>
+        <div class="value-card"><div class="value-icon">🎁</div><h3>Custom Gift Packs</h3><p>Curate a personalised snack hamper for birthdays, Diwali, and every occasion worth celebrating.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-inner">
+      <div class="section-header">
+        <div class="section-eyebrow">Testimonials</div>
+        <h2 class="section-title">What Our Customers Say</h2>
+        <p class="section-sub">Thousands of happy snackers across India trust Swamy Bakery</p>
+      </div>
+      <div class="reviews-grid" id="homeReviews"></div>
+    </div>
+  </section>
+
+  <section class="section bg-cream2">
+    <div class="section-inner">
+      <div class="cta-banner">
+        <div class="cta-banner-tag">✨ Limited Time Offer</div>
+        <h2>Ready to Order? Get 10% Off Your First Order!</h2>
+        <p>Join 50,000+ happy snack lovers. Use the code below at checkout.</p>
+        <div class="cta-code">SWAMY10</div><br>
+        <button class="btn-gold" onclick="navigate('shop')">Order Now 🛒</button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- SHOP -->
+<div class="page" id="page-shop">
+  <div class="shop-hero">
+    <div class="shop-hero-inner">
+      <h1>Our Snack Shop</h1>
+      <p>Freshly made snacks — delivered to your doorstep</p>
+      <div class="shop-search-wrap">
+        <span class="shop-search-icon">🔍</span>
+        <input type="text" class="shop-search" id="shopSearch" placeholder="Search snacks, sweets, cakes..." oninput="searchProducts(this.value)"/>
+      </div>
+    </div>
+  </div>
+  <div class="shop-layout">
+    <aside class="shop-filters" id="shopFilters">
+      <h3 class="filter-title">⚙️ Filters</h3>
+      <div class="filter-group">
+        <h4>Category</h4>
+        <div id="categoryFilters"></div>
+      </div>
+      <div class="filter-group">
+        <h4>Max Price: <span id="priceLabel">₹1000</span></h4>
+        <input type="range" class="price-range" min="50" max="1000" value="1000" id="priceRange" oninput="updatePriceFilter(this.value)"/>
+      </div>
+      <button class="btn-primary" style="width:100%;justify-content:center" onclick="applyFilters()">Apply Filters</button>
+    </aside>
+    <div>
+      <div class="shop-header">
+        <div style="display:flex;align-items:center;gap:1rem">
+          <button class="mobile-filter-btn" onclick="toggleFilters()">⚙ Filters</button>
+          <span class="shop-count" id="shopCount">Loading...</span>
+        </div>
+        <select class="sort-select" id="sortSelect" onchange="sortProducts()">
+          <option value="popular">Sort: Popular</option>
+          <option value="price_asc">Price: Low to High</option>
+          <option value="price_desc">Price: High to Low</option>
+          <option value="rating">Top Rated</option>
+        </select>
+      </div>
+      <div class="products-grid" id="shopProducts"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PRODUCT DETAIL -->
+<div class="page" id="page-product">
+  <div class="breadcrumb" id="productBreadcrumb"></div>
+  <div class="product-detail">
+    <div class="product-gallery">
+      <div class="main-img" id="mainProductImg"></div>
+      <div class="thumb-row" id="productThumbs"></div>
+    </div>
+    <div id="productInfoPanel"></div>
+  </div>
+  <div class="section" style="border-top:1px solid var(--cream2)">
+    <div class="section-inner">
+      <div class="section-header">
+        <div class="section-eyebrow">You Might Also Like</div>
+        <h2 class="section-title">Related Snacks</h2>
+      </div>
+      <div class="products-grid" id="relatedProducts"></div>
+    </div>
+  </div>
+</div>
+
+<!-- CART -->
+<div class="page" id="page-cart">
+  <div style="background:var(--cream2);padding:2rem;border-bottom:1px solid var(--glass-border)">
+    <div style="max-width:1260px;margin:0 auto">
+      <h1 style="font-size:1.9rem;color:var(--brown)">Your Cart 🛒</h1>
+      <p style="color:var(--text2);margin-top:4px;font-size:0.9rem">Review your items before checkout</p>
+    </div>
+  </div>
+  <div class="cart-layout" id="cartLayout"></div>
+</div>
+
+<!-- CHECKOUT -->
+<div class="page" id="page-checkout">
+  <div style="background:var(--cream2);padding:2rem;border-bottom:1px solid var(--glass-border)">
+    <div style="max-width:1260px;margin:0 auto">
+      <h1 style="font-size:1.9rem;color:var(--brown)">Checkout</h1>
+      <p style="color:var(--text2);margin-top:4px;font-size:0.9rem">Secure checkout powered by Razorpay</p>
+    </div>
+  </div>
+  <div class="checkout-layout" id="checkoutLayout"></div>
+</div>
+
+<!-- MY ORDERS -->
+<div class="page" id="page-myorders">
+  <div style="background:var(--cream2);padding:2rem;border-bottom:1px solid var(--glass-border)">
+    <div style="max-width:900px;margin:0 auto">
+      <h1 style="font-size:1.9rem;color:var(--brown);margin-bottom:0.3rem">My Orders 📦</h1>
+      <p style="color:var(--text2);font-size:0.9rem">Click any order to see details and track it live</p>
+    </div>
+  </div>
+  <div id="myOrdersList" class="orders-list"></div>
+  <div id="myOrdersDetail" style="display:none;max-width:900px;margin:0 auto;padding:2.5rem 2rem">
+    <button class="order-detail-back" onclick="showOrdersList()">← Back to My Orders</button>
+    <div id="myOrdersDetailContent"></div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<div class="page" id="page-about">
+  <div class="about-hero">
+    <div class="hero-eyebrow" style="margin:0 auto 1.2rem;width:fit-content;border-color:rgba(212,160,67,0.30);color:var(--gold-light)">🏆 25 Years of Snacking Excellence</div>
+    <h1>Our Story</h1>
+    <p>From Kanyakumari to every home — every snack, every sweet carries a piece of our heart.</p>
+  </div>
+  <div class="section">
+    <div class="section-inner">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;margin-bottom:5rem" id="aboutStoryGrid">
+        <div>
+          <div class="section-eyebrow" style="text-align:left">The Beginning</div>
+          <h2 class="section-title" style="text-align:left;margin-bottom:1.5rem;margin-top:0.5rem">How Swamy Bakery Was Born</h2>
+          <p style="color:var(--text2);line-height:1.8;margin-bottom:1rem">In 2000, Mr. Thangadurai opened a small 200 sq ft shop in Monday Market, Kanniyakumari, with just one fryer and an unwavering belief in quality snacks.</p>
+          <p style="color:var(--text2);line-height:1.8;margin-bottom:1rem">His philosophy: use only the best ingredients, treat every customer like family, and never compromise on freshness.</p>
+          <p style="color:var(--text2);line-height:1.8">Today, with three locations and a thriving online presence, we still use the same original recipes that made people fall in love with us.</p>
+        </div>
+        <div style="border-radius:var(--r-xl);overflow:hidden;aspect-ratio:1;box-shadow:var(--shadow-xl)">
+          <img src="https://images.pexels.com/photos/18319033/pexels-photo-18319033.jpeg" alt="Traditional Indian snack shop" loading="lazy" style="width:100%;height:100%;object-fit:cover"/>
+        </div>
+      </div>
+      <div class="section-header">
+        <div class="section-eyebrow">Our Values</div>
+        <h2 class="section-title">What Drives Us Every Day</h2>
+      </div>
+      <div class="values-grid" id="aboutValues"></div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTACT -->
+<div class="page" id="page-contact">
+  <div style="background:var(--cream2);padding:2.5rem 2rem;border-bottom:1px solid var(--glass-border)">
+    <div style="max-width:1000px;margin:0 auto">
+      <h1 style="font-size:2rem;color:var(--brown);margin-bottom:0.3rem">Get In Touch</h1>
+      <p style="color:var(--text2)">We'd love to hear from you!</p>
+    </div>
+  </div>
+  <div class="contact-layout">
+    <div class="contact-info">
+      <h3>Contact Information</h3>
+      <div class="contact-detail">
+        <div class="contact-detail-icon">📍</div>
+        <div class="contact-detail-text"><strong>Address</strong><span><a href="https://www.google.com/maps?q=8.20043516599492,77.30374695299265" target="_blank" style="color:rgba(253,248,240,0.65);text-decoration:underline">View on Google Maps</a></span></div>
+      </div>
+      <div class="contact-detail">
+        <div class="contact-detail-icon">📞</div>
+        <div class="contact-detail-text"><strong>Phone</strong><span>+91 90807 29355</span></div>
+      </div>
+      <div class="contact-detail">
+        <div class="contact-detail-icon">✉️</div>
+        <div class="contact-detail-text"><strong>Email</strong><span>swamybakery3@gmail.com</span></div>
+      </div>
+      <div class="contact-detail">
+        <div class="contact-detail-icon">🕐</div>
+        <div class="contact-detail-text"><strong>Hours</strong><span>Mon–Sat: 6 AM – 9 PM · Sun: 7 AM – 7 PM</span></div>
+      </div>
+      <div class="social-links">
+        <div class="social-btn">📘</div>
+        <div class="social-btn">📸</div>
+        <div class="social-btn">🐦</div>
+      </div>
+    </div>
+    <div class="contact-form-card">
+      <h3 style="font-size:1.2rem;font-weight:700;color:var(--brown);margin-bottom:1.8rem">Send Us a Message</h3>
+      <div class="form-row">
+        <div class="form-group"><label>First Name</label><input type="text" id="cf-fname" placeholder="Ramu"/></div>
+        <div class="form-group"><label>Last Name</label><input type="text" id="cf-lname" placeholder="Swamy"/></div>
+      </div>
+      <div class="form-group"><label>Email</label><input type="email" id="cf-email" placeholder="you@example.com"/></div>
+      <div class="form-group"><label>Message</label><textarea id="cf-msg" rows="5" placeholder="Tell us how we can help..."></textarea></div>
+      <button class="btn-primary" style="width:100%;justify-content:center" onclick="submitContact()">Send Message →</button>
+    </div>
+  </div>
+</div>
+
+<!-- WISHLIST -->
+<div class="page" id="page-wishlist">
+  <div style="background:var(--cream2);padding:2rem;border-bottom:1px solid var(--glass-border)">
+    <div style="max-width:1260px;margin:0 auto"><h1 style="font-size:1.9rem;color:var(--brown)">My Wishlist ❤️</h1></div>
+  </div>
+  <div style="max-width:1260px;margin:0 auto;padding:2.5rem 2rem">
+    <div class="products-grid" id="wishlistProducts"></div>
+    <div id="wishlistEmpty" class="empty-state" style="display:none">
+      <div class="empty-icon">💝</div>
+      <h3>Your wishlist is empty</h3>
+      <p>Save your favourite snacks to find them easily later</p>
+      <button class="btn-primary" onclick="navigate('shop')">Browse Snacks →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ORDER SUCCESS -->
+<div class="page" id="page-order-success">
+  <div style="background:linear-gradient(135deg,var(--brown) 0%,#5E3018 100%);padding:3rem 2rem;text-align:center;position:relative;overflow:hidden">
+    <div style="position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 50% 0%,rgba(212,160,67,0.15) 0%,transparent 60%);pointer-events:none"></div>
+    <div style="font-size:4rem;margin-bottom:1rem;position:relative">🎉</div>
+    <h2 style="font-size:2rem;color:var(--cream);margin-bottom:0.5rem;position:relative">Order Confirmed!</h2>
+    <p style="color:rgba(253,248,240,0.72);font-size:1rem;position:relative">Thank you for choosing Swamy Bakery</p>
+    <div style="display:inline-block;background:rgba(255,255,255,0.12);border-radius:100px;padding:8px 24px;margin-top:1rem;position:relative;backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.15)">
+      <span style="color:var(--cream);font-size:0.9rem;font-weight:700" id="successOrderId">Order #—</span>
+    </div>
+  </div>
+  <div style="max-width:760px;margin:0 auto;padding:2.5rem 2rem" id="orderSuccessBody"></div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:0.2rem">
+          <div style="width:40px;height:40px;background:linear-gradient(135deg,var(--orange),var(--orange2));border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:0 4px 16px rgba(232,99,42,0.30)">🍪</div>
+          <div style="font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--cream);font-weight:700">Swamy Bakery</div>
+        </div>
+        <p>Freshly made snacks, delivered to your door since 2000. Pure ingredients. Pure love.</p>
+      </div>
+      <div class="footer-col"><h4>Quick Links</h4><ul class="footer-links"><li><a onclick="navigate('home')">Home</a></li><li><a onclick="navigate('shop')">Shop</a></li><li><a onclick="navigate('about')">About Us</a></li><li><a onclick="navigate('contact')">Contact</a></li><li><a onclick="navigate('myorders')">My Orders</a></li></ul></div>
+      <div class="footer-col"><h4>Categories</h4><ul class="footer-links"><li><a onclick="filterByCategory('Murukku')">Murukku</a></li><li><a onclick="filterByCategory('Mixture')">Mixture</a></li><li><a onclick="filterByCategory('Sweets')">Indian Sweets</a></li><li><a onclick="filterByCategory('Cakes')">Cakes</a></li><li><a onclick="filterByCategory('Cookies')">Cookies</a></li></ul></div>
+      <div class="footer-col"><h4>Support</h4><ul class="footer-links"><li><a>FAQs</a></li><li><a>Return Policy</a></li><li><a>Privacy Policy</a></li><li><a>Shipping Info</a></li></ul></div>
+    </div>
+    <hr class="footer-divider"/>
+    <div class="footer-bottom">
+      <p>© 2025 Swamy Bakery. All rights reserved. Made with ❤️ in Kanyakumari.</p>
+      <div class="footer-trust">
+        <span class="trust-badge">🔒 Secure Payments</span>
+        <span class="trust-badge">🚚 Fast Delivery</span>
+        <span class="trust-badge">✅ FSSAI Certified</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<a class="whatsapp-btn" href="https://wa.me/919080729355" target="_blank" aria-label="Chat on WhatsApp">
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.893 0C5.354 0 0 5.354 0 11.893c0 2.096.546 4.142 1.587 5.945L.057 24l6.304-1.654a11.882 11.882 0 005.532 1.37h.005c6.539 0 11.893-5.354 11.893-11.893C23.791 5.354 18.432 0 11.893 0zm0 21.78a9.864 9.864 0 01-5.031-1.378l-.361-.214-3.741.981.998-3.648-.235-.374a9.864 9.864 0 01-1.51-5.147c0-5.456 4.438-9.894 9.894-9.894 5.456 0 9.894 4.438 9.894 9.894 0 5.456-4.438 9.88-9.908 9.88z"/></svg>
+</a>
+<button class="order-now-mobile" onclick="navigate('shop')">🛒 Order Now</button>
+
+<!-- LOGIN MODAL -->
+<div class="modal-overlay" id="loginModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeLogin()">✕</button>
+    <h2 id="modalTitle">Welcome Back!</h2>
+    <p class="modal-sub" id="modalSub">Sign in to access your orders</p>
+    <div class="auth-tabs">
+      <button class="auth-tab active" onclick="switchAuth('login',this)">Login</button>
+      <button class="auth-tab" onclick="switchAuth('signup',this)">Sign Up</button>
+    </div>
+    <div id="loginForm">
+      <div class="form-group"><label>Email</label><input type="email" id="li-email" placeholder="you@email.com"/></div>
+      <div class="form-group"><label>Password</label><input type="password" id="li-pass" placeholder="Enter password"/></div>
+      <button class="btn-primary" id="loginSubmitBtn" style="width:100%;justify-content:center;margin-bottom:1rem" onclick="submitLogin()">Login</button>
+    </div>
+    <div id="signupForm" style="display:none">
+      <div class="form-row">
+        <div class="form-group"><label>First Name</label><input type="text" id="su-fname" placeholder="First name"/></div>
+        <div class="form-group"><label>Last Name</label><input type="text" id="su-lname" placeholder="Last name"/></div>
+      </div>
+      <div class="form-group"><label>Phone</label><input type="tel" id="su-phone" placeholder="+91 98765 43210"/></div>
+      <div class="form-group"><label>Email</label><input type="email" id="su-email" placeholder="you@email.com"/></div>
+      <div class="form-group"><label>Password</label><input type="password" id="su-pass" placeholder="Min 6 characters"/></div>
+      <button class="btn-primary" id="signupSubmitBtn" style="width:100%;justify-content:center" onclick="submitSignup()">Create Account</button>
+    </div>
+  </div>
+</div>
+
+<!-- LOGIN REQUIRED MODAL -->
+<div class="login-required-modal" id="loginRequiredModal">
+  <div class="login-required-box">
+    <button class="login-required-close" onclick="closeLoginRequired()">✕</button>
+    <div class="login-required-icon">🔐</div>
+    <h3>Login Required</h3>
+    <p>Please log in or create a free account to place your order. Your cart items will be saved!</p>
+    <div class="login-required-actions">
+      <button class="btn-primary" style="justify-content:center" onclick="closeLoginRequired();openLogin()">Login to Continue →</button>
+      <button class="btn-outline" onclick="closeLoginRequired();openLogin();setTimeout(()=>switchAuth('signup',document.querySelectorAll('.auth-tab')[1]),100)">Create Free Account</button>
+      <button style="font-size:0.82rem;color:var(--text2);background:none;border:none;cursor:pointer;margin-top:0.3rem" onclick="closeLoginRequired()">Maybe later</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="/app.js"></script>
+</body>
+</html>

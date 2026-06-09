@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Swamy Bakery — Admin Panel</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="/admin.css">
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="icon">🍰</div>
+    <div class="text">Swamy Bakery<span>Admin Panel</span></div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section">Main</div>
+    <div class="nav-item active" onclick="showPanel('dashboard',this)"><span class="icon">📊</span> Dashboard</div>
+    <div class="nav-item" onclick="showPanel('products',this)"><span class="icon">🧁</span> Products</div>
+    <div class="nav-item" onclick="showPanel('orders',this)"><span class="icon">📦</span> Orders</div>
+    <div class="nav-item" onclick="showPanel('customers',this)"><span class="icon">👥</span> Customers</div>
+    <div class="nav-section">Store</div>
+    <div class="nav-item" onclick="showPanel('categories',this)"><span class="icon">🗂️</span> Categories</div>
+    <div class="nav-item" onclick="showPanel('coupons',this)"><span class="icon">🏷️</span> Coupons</div>
+    <div class="nav-section">Settings</div>
+    <div class="nav-item" onclick="showPanel('settings',this)"><span class="icon">⚙️</span> Settings</div>
+    <div class="nav-item" onclick="window.open('/','_blank')"><span class="icon">🌐</span> View Store</div>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="admin-badge">
+      <div class="avatar">A</div>
+      <div class="info">
+        <div class="name" id="adminName">Admin</div>
+        <div class="role">Store Owner</div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<div class="main">
+  <header class="topbar">
+    <div class="topbar-left">
+      <button class="topbar-btn btn-ghost" onclick="toggleSidebar()" style="display:none;padding:6px 10px" id="menuBtn">☰</button>
+      <div class="page-title" id="pageTitle">Dashboard</div>
+    </div>
+    <div class="topbar-right">
+      <span style="font-size:0.78rem;color:var(--text2)" id="timeDisplay"></span>
+      <button class="topbar-btn btn-ghost" onclick="logout()">Logout</button>
+    </div>
+  </header>
+
+  <div class="content">
+
+    <!-- ====== LOGIN ====== -->
+    <div id="loginScreen" style="display:flex;align-items:center;justify-content:center;min-height:calc(100vh - 60px)">
+      <div style="background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius-lg);padding:2.5rem;width:100%;max-width:380px">
+        <div style="text-align:center;margin-bottom:2rem">
+          <div style="font-size:3rem;margin-bottom:0.8rem">🍰</div>
+          <h2 style="font-size:1.4rem;color:var(--text);margin-bottom:0.3rem">Admin Login</h2>
+          <p style="font-size:0.85rem;color:var(--text2)">Swamy Bakery Control Panel</p>
+        </div>
+        <div class="form-group"><label>Email</label><input type="email" id="loginEmail" placeholder="admin@swamybakery.in" value="Swamybakery31@gmail.com"/></div>
+        <div class="form-group"><label>Password</label><input type="password" id="loginPass" placeholder="Enter password" value="admin123"/></div>
+        <button class="topbar-btn btn-primary" style="width:100%;padding:10px;font-size:0.9rem;border-radius:var(--radius)" onclick="adminLogin()">Login to Dashboard</button>
+        <p style="text-align:center;font-size:0.75rem;color:var(--text3);margin-top:1rem" id="loginError"></p>
+      </div>
+    </div>
+
+    <!-- ====== DASHBOARD ====== -->
+    <div class="panel active" id="panel-dashboard" style="display:none">
+      <div class="stats-grid">
+        <div class="stat-card" style="--accent-color:var(--orange)">
+          <div class="icon">💰</div>
+          <div class="label">Total Revenue</div>
+          <div class="value" id="stat-revenue">₹0</div>
+          <div class="change" style="color:var(--green)">↑ Loading...</div>
+        </div>
+        <div class="stat-card" style="--accent-color:#4CAF50">
+          <div class="icon">📦</div>
+          <div class="label">Total Orders</div>
+          <div class="value" id="stat-orders">0</div>
+          <div class="change" style="color:var(--green)">↑ Loading...</div>
+        </div>
+        <div class="stat-card" style="--accent-color:#3498db">
+          <div class="icon">👥</div>
+          <div class="label">Customers</div>
+          <div class="value" id="stat-customers">0</div>
+          <div class="change" style="color:var(--green)">↑ Loading...</div>
+        </div>
+        <div class="stat-card" style="--accent-color:#9b59b6">
+          <div class="icon">🧁</div>
+          <div class="label">Products</div>
+          <div class="value" id="stat-products">0</div>
+          <div class="change" style="color:var(--text2)">In catalog</div>
+        </div>
+      </div>
+
+      <div class="charts-row">
+        <div class="chart-card">
+          <h3>Weekly Orders</h3>
+          <div class="mini-bars" id="weeklyChart"></div>
+          <div style="display:flex;justify-content:space-between;margin-top:6px">
+            <span style="font-size:0.65rem;color:var(--text3)">Mon</span>
+            <span style="font-size:0.65rem;color:var(--text3)">Tue</span>
+            <span style="font-size:0.65rem;color:var(--text3)">Wed</span>
+            <span style="font-size:0.65rem;color:var(--text3)">Thu</span>
+            <span style="font-size:0.65rem;color:var(--text3)">Fri</span>
+            <span style="font-size:0.65rem;color:var(--text3)">Sat</span>
+            <span style="font-size:0.65rem;color:var(--text3)">Sun</span>
+          </div>
+        </div>
+        <div class="chart-card">
+          <h3>Top Categories</h3>
+          <div id="topCategories"></div>
+        </div>
+      </div>
+
+      <div class="table-card">
+        <div class="table-header">
+          <h3>Recent Orders</h3>
+          <button class="topbar-btn btn-ghost" onclick="showPanel('orders',document.querySelector('[onclick*=orders]'))">View All</button>
+        </div>
+        <table>
+          <thead><tr><th>Order ID</th><th>Customer</th><th>Amount</th><th>Status</th><th>Date</th></tr></thead>
+          <tbody id="recentOrdersTable"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ====== PRODUCTS ====== -->
+    <div class="panel" id="panel-products" style="display:none">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:0.5rem">
+        <div class="cat-pills" id="productCatFilter"></div>
+        <button class="topbar-btn btn-primary" onclick="openProductModal()">+ Add Product</button>
+      </div>
+      <div class="table-card">
+        <div class="table-header">
+          <h3>All Products (<span id="productCount">0</span>)</h3>
+          <div class="table-actions">
+            <input class="search-input" placeholder="Search products..." oninput="searchProducts(this.value)"/>
+          </div>
+        </div>
+        <table>
+          <thead><tr><th>Product</th><th>Category</th><th>Price/kg</th><th>Old Price/kg</th><th>Badge</th><th>Rating</th><th>Actions</th></tr></thead>
+          <tbody id="productsTable"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ====== ORDERS ====== -->
+    <div class="panel" id="panel-orders" style="display:none">
+      <div class="table-card">
+        <div class="table-header">
+          <h3>All Orders (<span id="orderCount">0</span>)</h3>
+          <div class="table-actions">
+            <select class="search-input" style="width:160px" onchange="filterOrders(this.value)">
+              <option value="">All Status</option>
+              <option value="confirmed">Confirmed</option>
+              <option value="preparing">Preparing</option>
+              <option value="packed">Packed</option>
+              <option value="out_for_delivery">Out for Delivery</option>
+              <option value="delivered">Delivered</option>
+              <option value="cancelled">Cancelled</option>
+            </select>
+            <input class="search-input" placeholder="Search orders..." oninput="searchOrders(this.value)"/>
+          </div>
+        </div>
+        <table>
+          <thead><tr><th>Order ID</th><th>Customer</th><th>Items</th><th>Total</th><th>Payment</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead>
+          <tbody id="ordersTable"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ====== CUSTOMERS ====== -->
+    <div class="panel" id="panel-customers" style="display:none">
+      <div class="table-card">
+        <div class="table-header">
+          <h3>Customers (<span id="customerCount">0</span>)</h3>
+          <div class="table-actions">
+            <input class="search-input" placeholder="Search customers..." oninput="searchCustomers(this.value)"/>
+          </div>
+        </div>
+        <table>
+          <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Orders</th><th>Joined</th><th>Actions</th></tr></thead>
+          <tbody id="customersTable"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ====== CATEGORIES ====== -->
+    <div class="panel" id="panel-categories" style="display:none">
+      <div style="display:flex;justify-content:flex-end;margin-bottom:1rem">
+        <button class="topbar-btn btn-primary" onclick="openCatModal()">+ Add Category</button>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:1rem" id="categoriesGrid"></div>
+    </div>
+
+    <!-- ====== COUPONS ====== -->
+    <div class="panel" id="panel-coupons" style="display:none">
+      <div style="display:flex;justify-content:flex-end;margin-bottom:1rem">
+        <button class="topbar-btn btn-primary" onclick="openCouponModal()">+ Add Coupon</button>
+      </div>
+      <div class="table-card">
+        <div class="table-header"><h3>Coupons</h3></div>
+        <table>
+          <thead><tr><th>Code</th><th>Discount</th><th>Type</th><th>Min Order</th><th>Uses</th><th>Active</th><th>Actions</th></tr></thead>
+          <tbody id="couponsTable"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ====== SETTINGS ====== -->
+    <div class="panel" id="panel-settings" style="display:none">
+      <div style="max-width:600px">
+        <div class="table-card" style="margin-bottom:1rem">
+          <div class="table-header"><h3>Store Settings</h3></div>
+          <div style="padding:1.5rem">
+            <div class="form-group"><label>Store Name</label><input type="text" id="set-name" value="Swamy Bakery"/></div>
+            <div class="form-group"><label>Tagline</label><input type="text" id="set-tag" value="Freshly Baked Happiness Delivered"/></div>
+            <div class="form-group"><label>Phone</label><input type="tel" id="set-phone" value="+91 98404 12345"/></div>
+            <div class="form-group"><label>Email</label><input type="email" id="set-email" value="hello@swamybakery.in"/></div>
+            <div class="form-group"><label>Address</label><textarea id="set-addr" rows="2">No. 42, Luz Church Road, Mylapore, Chennai – 600004</textarea></div>
+            <div class="form-group"><label>Free Delivery Above (₹)</label><input type="number" id="set-free" value="499"/></div>
+            <div class="form-group"><label>Delivery Charge (₹)</label><input type="number" id="set-dcharge" value="49"/></div>
+            <button class="topbar-btn btn-primary" onclick="saveSettings()">Save Settings</button>
+          </div>
+        </div>
+        <div class="table-card">
+          <div class="table-header"><h3>API Configuration</h3></div>
+          <div style="padding:1.5rem">
+            <div class="form-group"><label>Backend API URL</label><input type="text" id="set-api" value="https://e-commerce-1-m0mc.onrender.com/api"/></div>
+            <div class="form-group"><label>Razorpay Key ID</label><input type="text" id="set-rzp" value="rzp_test_SgoJAptrv9wz1j"/></div>
+            <button class="topbar-btn btn-success" onclick="testAPI()">Test Connection</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end content -->
+</div><!-- end main -->
+
+<!-- ====== PRODUCT MODAL ====== -->
+<div class="modal-overlay" id="productModal">
+  <div class="modal">
+    <div class="modal-head">
+      <h2 id="productModalTitle">Add Product</h2>
+      <button class="modal-close" onclick="closeModal('productModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group"><label>Product Name *</label><input type="text" id="p-name" placeholder="Black Forest Cake"/></div>
+        <div class="form-group">
+          <label>Category *</label>
+          <select id="p-cat"><option value="">Loading categories...</option></select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Price (₹ per 1kg) *</label><input type="number" id="p-price" placeholder="400"/></div>
+        <div class="form-group"><label>Old Price (₹ per 1kg)</label><input type="number" id="p-oldprice" placeholder="500"/></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group" style="display:none"><label>Weight</label><input type="text" id="p-weight" placeholder="500g"/></div>
+        <div class="form-group"><label>Badge</label><input type="text" id="p-badge" placeholder="Best Seller"/></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Rating (0–5)</label><input type="number" id="p-rating" placeholder="4.8" min="0" max="5" step="0.1"/></div>
+        <div class="form-group"><label>Emoji (fallback)</label><input type="text" id="p-emoji" placeholder="🎂" maxlength="4"/></div>
+      </div>
+      <div class="form-group">
+        <label>Product Image</label>
+        <div id="imgUploadArea" class="img-upload-area" onclick="document.getElementById('p-img-file').click()">
+          <input type="file" id="p-img-file" accept="image/*" style="display:none" onchange="handleImageFile(event)"/>
+          <div id="imgUploadPlaceholder">
+            <div style="font-size:2rem;margin-bottom:0.4rem;opacity:0.4">📷</div>
+            <div style="font-size:0.85rem;color:var(--text2);font-weight:600">Click to upload image</div>
+            <div style="font-size:0.75rem;color:var(--text3);margin-top:4px">JPG, PNG, WEBP · Max 2MB</div>
+          </div>
+          <div id="imgPreviewWrap" style="display:none" onclick="event.stopPropagation()">
+            <div class="img-preview-wrap">
+              <img id="imgPreview" class="img-preview" src="" alt="Preview"/>
+              <button class="img-remove-btn" onclick="clearImage()" title="Remove image">✕</button>
+            </div>
+            <div style="font-size:0.75rem;color:var(--text2);margin-top:6px" id="imgSource"></div>
+          </div>
+        </div>
+        <div class="img-url-row">
+          <input type="text" id="p-img-url" placeholder="Or paste an image URL (https://...)"/>
+          <button onclick="loadImageFromUrl()">Load URL</button>
+        </div>
+        <input type="hidden" id="p-image"/>
+      </div>
+      <div class="form-group"><label>Description</label><textarea id="p-desc" rows="3" placeholder="Describe the product..."></textarea></div>
+      <div class="form-group"><label>Tags (comma separated)</label><input type="text" id="p-tags" placeholder="cake, chocolate, birthday"/></div>
+    </div>
+    <div class="modal-footer">
+      <button class="topbar-btn btn-ghost" onclick="closeModal('productModal')">Cancel</button>
+      <button class="topbar-btn btn-primary" onclick="saveProduct()">Save Product</button>
+    </div>
+  </div>
+</div>
+
+<!-- ====== ORDER DETAIL MODAL ====== -->
+<div class="modal-overlay" id="orderModal">
+  <div class="modal" style="max-width:640px">
+    <div class="modal-head">
+      <h2 id="orderModalTitle">Order Details</h2>
+      <button class="modal-close" onclick="closeModal('orderModal')">✕</button>
+    </div>
+    <div class="modal-body" id="orderModalBody"></div>
+    <div class="modal-footer">
+      <button class="topbar-btn btn-ghost" onclick="closeModal('orderModal')">Close</button>
+      <button class="topbar-btn btn-primary" id="updateStatusBtn" onclick="updateOrderStatus()">Update Status</button>
+    </div>
+  </div>
+</div>
+
+<!-- ====== CATEGORY MODAL ====== -->
+<div class="modal-overlay" id="catModal">
+  <div class="modal" style="max-width:420px">
+    <div class="modal-head">
+      <h2>Add Category</h2>
+      <button class="modal-close" onclick="closeModal('catModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label>Category Name *</label>
+        <input type="text" id="cat-name" placeholder="e.g. Murukku"/>
+      </div>
+      <div class="form-group">
+        <label>Category Image</label>
+        <div class="img-upload-area" onclick="document.getElementById('cat-img-file').click()" id="catImgUploadArea">
+          <input type="file" id="cat-img-file" accept="image/*" style="display:none" onchange="handleCatImageFile(event)"/>
+          <div id="catImgPreviewWrap" style="display:none;position:relative;display:inline-block">
+            <img id="catImgPreview" class="img-preview" src="" alt="preview"/>
+            <button class="img-remove-btn" onclick="event.stopPropagation();removeCatImage()">✕</button>
+          </div>
+          <div id="catImgPlaceholder">
+            <div style="font-size:2rem;margin-bottom:0.4rem">🖼️</div>
+            <div style="font-size:0.82rem;color:var(--text2)">Click to upload image</div>
+            <div style="font-size:0.72rem;color:var(--text3);margin-top:4px">JPG, PNG, WEBP · max 2MB</div>
+          </div>
+        </div>
+        <div class="img-url-row" style="display:flex;gap:8px;margin-top:8px">
+          <input type="text" id="cat-img-url" placeholder="Or paste image URL..." style="flex:1;padding:8px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);font-size:0.82rem;color:var(--text);outline:none"/>
+          <button onclick="loadCatImageFromUrl()">Use URL</button>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Emoji (fallback if no image)</label>
+        <input type="text" id="cat-emoji" placeholder="🍮" maxlength="4"/>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="topbar-btn btn-ghost" onclick="closeModal('catModal')">Cancel</button>
+      <button class="topbar-btn btn-primary" onclick="saveCategory()">Add Category</button>
+    </div>
+  </div>
+</div>
+
+<!-- ====== COUPON MODAL ====== -->
+<div class="modal-overlay" id="couponModal">
+  <div class="modal" style="max-width:420px">
+    <div class="modal-head">
+      <h2>Add Coupon</h2>
+      <button class="modal-close" onclick="closeModal('couponModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group"><label>Coupon Code *</label><input type="text" id="cp-code" placeholder="SWAMY10" style="text-transform:uppercase"/></div>
+      <div class="form-row">
+        <div class="form-group"><label>Discount</label><input type="number" id="cp-discount" placeholder="10"/></div>
+        <div class="form-group"><label>Type</label>
+          <select id="cp-type"><option value="percent">Percentage (%)</option><option value="flat">Flat (₹)</option></select>
+        </div>
+      </div>
+      <div class="form-group"><label>Minimum Order (₹)</label><input type="number" id="cp-min" placeholder="199"/></div>
+      <div class="form-group"><label>Max Uses</label><input type="number" id="cp-uses" placeholder="100"/></div>
+    </div>
+    <div class="modal-footer">
+      <button class="topbar-btn btn-ghost" onclick="closeModal('couponModal')">Cancel</button>
+      <button class="topbar-btn btn-primary" onclick="saveCoupon()">Create Coupon</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="/admin.js"></script>
+</body>
+</html>
