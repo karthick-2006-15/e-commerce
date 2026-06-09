@@ -14,7 +14,10 @@ const app  = express();
 const PORT = process.env.PORT || 5000;
 
 // ─── Middleware ───────────────────────────────────────────────
-app.use(helmet({ contentSecurityPolicy: false })); // allow Unsplash images
+app.use(helmet({ 
+  contentSecurityPolicy: false,
+  crossOriginOpenerPolicy: false 
+})); // allow popups for Razorpay and Unsplash images
 app.use(cors({ origin: '*' })); // Should restrict in prod, e.g. ['https://swamybakery.in']
 app.use(express.json({
   verify: (req, res, buf) => { req.rawBody = buf; }
