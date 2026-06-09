@@ -14,7 +14,7 @@ const orderSchema = new mongoose.Schema({
 awbCode:              { type: String, default: null },
 courierName:          { type: String, default: null },
   status:            { type: String, default: 'confirmed',
-                       enum: ['confirmed','preparing','packed','out_for_delivery','delivered','cancelled'] },
+                       enum: ['pending','confirmed','preparing','packed','out_for_delivery','delivered','cancelled'] },
   estimatedDelivery: { type: String },
 }, { timestamps: true });
 
