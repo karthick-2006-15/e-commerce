@@ -12,6 +12,7 @@ const productSchema = new mongoose.Schema({
   emoji:       { type: String, default: '🍰' },
   image:       { type: String, default: '' },
   description: { type: String, default: '' },
+  ingredients: { type: String, default: '' },
   tags:        { type: [String], default: [] },
   stock:       { type: Number, default: 100 },
 }, { timestamps: true });

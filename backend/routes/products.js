@@ -44,7 +44,7 @@ router.get('/:id', async (req, res) => {
 // ── ADD PRODUCT ──────────────────────────────────────────────
 router.post('/', auth, isAdmin, async (req, res) => {
   try {
-    const { name, category, price, oldPrice, weight, badge, rating, emoji, image, desc, description, tags } = req.body;
+    const { name, category, price, oldPrice, weight, badge, rating, emoji, image, desc, description, ingredients, tags } = req.body;
     if (!name || !price) return res.status(400).json({ success: false, message: 'Name and price are required' });
 
     const product = await Product.create({
@@ -58,6 +58,7 @@ router.post('/', auth, isAdmin, async (req, res) => {
       emoji:       emoji       || '🍰',
       image:       image       || '',
       description: desc || description || '',
+      ingredients: ingredients || '',
       tags:        tags        || [],
       reviews:     0,
     });
@@ -70,7 +71,7 @@ router.post('/', auth, isAdmin, async (req, res) => {
 // ── UPDATE PRODUCT ───────────────────────────────────────────
 router.put('/:id', auth, isAdmin, async (req, res) => {
   try {
-    const { name, category, price, oldPrice, weight, badge, rating, emoji, image, desc, description, tags } = req.body;
+    const { name, category, price, oldPrice, weight, badge, rating, emoji, image, desc, description, ingredients, tags } = req.body;
     const updated = await Product.findByIdAndUpdate(
       req.params.id,
       {
@@ -84,6 +85,7 @@ router.put('/:id', auth, isAdmin, async (req, res) => {
         ...(emoji       !== undefined && { emoji }),
         ...(image       !== undefined && { image }),
         ...((desc || description) && { description: desc || description }),
+        ...(ingredients !== undefined && { ingredients }),
         ...(tags        && { tags }),
       },
       { new: true, runValidators: true }

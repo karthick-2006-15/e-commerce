@@ -305,11 +305,12 @@ async function openProductModal(id = null) {
       document.getElementById('p-rating').value   = p.rating || '';
       document.getElementById('p-emoji').value    = p.emoji || '';
       document.getElementById('p-desc').value     = p.desc || p.description || '';
+      document.getElementById('p-ingredients').value = p.ingredients || '';
       document.getElementById('p-tags').value     = (p.tags || []).join(', ');
       if (p.image) setImagePreview(p.image, p.image.startsWith('data:') ? 'Uploaded file' : 'URL: ' + p.image.slice(0,40) + '…');
     }
   } else {
-    ['p-name','p-price','p-oldprice','p-weight','p-badge','p-rating','p-emoji','p-desc','p-tags'].forEach(fid => document.getElementById(fid).value = '');
+    ['p-name','p-price','p-oldprice','p-weight','p-badge','p-rating','p-emoji','p-desc','p-ingredients','p-tags'].forEach(fid => document.getElementById(fid).value = '');
   }
   openModal('productModal');
 }
@@ -332,6 +333,7 @@ async function saveProduct() {
     emoji:     document.getElementById('p-emoji').value.trim() || '🍰',
     image:     document.getElementById('p-image').value.trim() || '',
     desc:      document.getElementById('p-desc').value.trim(),
+    ingredients: document.getElementById('p-ingredients').value.trim(),
     tags:      document.getElementById('p-tags').value.split(',').map(t => t.trim()).filter(Boolean),
   };
 

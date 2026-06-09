@@ -506,7 +506,10 @@ function setTab(el, type) {
   const content = document.getElementById('tabContent');
   if (!content) return;
   if (type === 'desc') content.innerHTML = `<p style="color:var(--text2);line-height:1.8;font-size:0.92rem">${currentProduct?.description||'Freshly made in our kitchen!'}</p>`;
-  else content.innerHTML = `<p style="color:var(--text2);line-height:1.8;font-size:0.92rem">Rice flour / Gram flour, Pure vegetable oil / Coconut oil, Rock salt, Cumin seeds, Sesame seeds, Red chilli, Curry leaves, Asafoetida.<br><br><strong style="color:var(--brown)">✓ No preservatives · ✓ No artificial colours · ✓ FSSAI Certified</strong></p>`;
+  else {
+    const ingredients = currentProduct?.ingredients || 'Rice flour / Gram flour, Pure vegetable oil / Coconut oil, Rock salt, Cumin seeds, Sesame seeds, Red chilli, Curry leaves, Asafoetida.';
+    content.innerHTML = `<p style="color:var(--text2);line-height:1.8;font-size:0.92rem">${ingredients}<br><br><strong style="color:var(--brown)">✓ No preservatives · ✓ No artificial colours · ✓ FSSAI Certified</strong></p>`;
+  }
 }
 
 // ============================================================
