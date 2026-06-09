@@ -68,6 +68,25 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', message: 'Swamy Bakery API is running 🍰' });
 });
 
+app.get('/api/health2', async (req, res) => {
+  try {
+    const User = require('./models/User');
+    const bcrypt = require('bcryptjs');
+    await User.deleteOne({ email: 'admin@swamybakery.com' });
+    const hashedPassword = await bcrypt.hash('admin123', 10);
+    const user = await User.create({
+      name: 'Super Admin',
+      email: 'admin@swamybakery.com',
+      phone: '9999999999',
+      password: hashedPassword,
+      role: 'admin'
+    });
+    res.json({ success: true, user });
+  } catch (err) {
+    res.json({ success: false, error: err.message });
+  }
+});
+
 app.get('/api/config', (req, res) => {
   res.json({ success: true, razorpayKeyId: process.env.RAZORPAY_KEY_ID });
 });
