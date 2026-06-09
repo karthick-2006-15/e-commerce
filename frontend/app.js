@@ -1301,6 +1301,12 @@ function showHeroSlide(n) {
   const slides = document.querySelectorAll('.hero-slide');
   const dots = document.querySelectorAll('#heroDots .dot');
   if (!slides.length) return;
+  
+  const heroSlidesContainer = document.getElementById('heroSlides');
+  if (heroSlidesContainer) {
+    heroSlidesContainer.style.transform = `translateX(-${n * 25}%)`;
+  }
+  
   slides.forEach(s => s.classList.remove('active'));
   dots.forEach(d => d.classList.remove('active'));
   slides[n].classList.add('active');
