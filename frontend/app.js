@@ -1273,17 +1273,11 @@ function initHeroCarousel() {
   if (!slides.length) return;
   showHeroSlide(0);
   startHeroCarousel();
-  
-  const heroEl = document.getElementById('heroCarousel');
-  if (heroEl) {
-    heroEl.addEventListener('mouseenter', () => clearInterval(heroInterval));
-    heroEl.addEventListener('mouseleave', startHeroCarousel);
-  }
 }
 
 function startHeroCarousel() {
   clearInterval(heroInterval);
-  heroInterval = setInterval(() => moveSlide(1), 5000);
+  heroInterval = setInterval(() => moveSlide(1), 4500);
 }
 
 function moveSlide(step) {
