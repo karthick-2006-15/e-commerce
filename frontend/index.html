@@ -64,43 +64,71 @@
 
 <!-- HOME -->
 <div class="page active" id="page-home">
-  <section class="hero">
-    <div class="hero-orb"></div>
-    <div class="hero-orb"></div>
-    <div class="hero-inner">
-      <div>
-        <div class="hero-eyebrow">Freshly baked happiness, delivered to your door</div>
-        <h1 class="hero-title">Crunchy, Spicy &<br><em>Irresistible</em> Snacks<br>Delivered</h1>
-        <p class="hero-desc">Handcrafted snacks made fresh every morning. From crispy murukku to creamy sweets — authentic Indian flavours from our kitchen to your door.</p>
-        <div class="hero-actions">
-          <button class="btn-primary" onclick="navigate('shop')">Shop Now →</button>
-          <button class="btn-outline" onclick="navigate('about')">Our Story</button>
-        </div>
-        <div class="hero-stats">
-          <div class="hero-stat"><strong>50K+</strong><span>Happy Customers</span></div>
-          <div class="hero-stat-divider"></div>
-          <div class="hero-stat"><strong>80+</strong><span>Snack Varieties</span></div>
-          <div class="hero-stat-divider"></div>
-          <div class="hero-stat"><strong>25 Yrs</strong><span>Since 2000</span></div>
-        </div>
-      </div>
-      <div class="hero-image-wrap">
-        <div class="hero-image-card">
-          <img src="https://images.pexels.com/photos/9191924/pexels-photo-9191924.jpeg" alt="Assorted Indian Snacks" loading="lazy" onerror="this.parentElement.style.background='var(--cream2)'"/>
-        </div>
-        <div class="hero-float-card card-1">
-          <div class="icon">🚚</div>
-          <div><strong>Free Delivery</strong><span>Above ₹499</span></div>
-        </div>
-        <div class="hero-float-card card-2">
-          <div class="icon">⭐</div>
-          <div>
-            <div class="hero-rating-stars">★★★★★</div>
-            <strong>4.9 / 5.0</strong>
-            <span>2,400+ reviews</span>
+  <section class="hero-carousel" id="heroCarousel">
+    <div class="hero-slides" id="heroSlides">
+      <!-- Slide 1 -->
+      <div class="hero-slide active" style="background-image: url('assets/hero-snacks.png');">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+          <h1 class="hero-title">Traditional Snacks Made Fresh Daily</h1>
+          <p class="hero-subtitle">Authentic South Indian snacks prepared with quality ingredients and delivered to your doorstep.</p>
+          <div class="hero-actions">
+            <button class="btn-primary" onclick="navigate('shop')">Shop Snacks</button>
+            <a href="https://wa.me/919489240400" target="_blank" class="btn-whatsapp">WhatsApp Order</a>
           </div>
         </div>
       </div>
+      <!-- Slide 2 -->
+      <div class="hero-slide" style="background-image: url('assets/hero-sweets.png');">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+          <h1 class="hero-title">Delicious Indian Sweets for Every Occasion</h1>
+          <p class="hero-subtitle">Handcrafted sweets made using traditional recipes and pure ingredients.</p>
+          <div class="hero-actions">
+            <button class="btn-primary" onclick="navigate('shop')">Explore Sweets</button>
+            <a href="https://wa.me/919489240400" target="_blank" class="btn-whatsapp">WhatsApp Order</a>
+          </div>
+        </div>
+      </div>
+      <!-- Slide 3 -->
+      <div class="hero-slide" style="background-image: url('assets/hero-bakery.png');">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+          <h1 class="hero-title">Fresh Bakery Delights</h1>
+          <p class="hero-subtitle">Cookies, biscuits, cakes, breads, and baked treats made fresh every day.</p>
+          <div class="hero-actions">
+            <button class="btn-primary" onclick="navigate('shop')">Browse Bakery</button>
+            <a href="https://wa.me/919489240400" target="_blank" class="btn-whatsapp">WhatsApp Order</a>
+          </div>
+        </div>
+      </div>
+      <!-- Slide 4 -->
+      <div class="hero-slide" style="background-image: url('assets/hero-brand.png');">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+          <h1 class="hero-title">Swamy Bakery Since 2000</h1>
+          <p class="hero-subtitle">Serving families with authentic taste, quality products, and trusted service for over 25 years.</p>
+          <div class="hero-actions">
+            <button class="btn-primary" onclick="navigate('about')">Our Story</button>
+            <a href="https://wa.me/919489240400" target="_blank" class="btn-whatsapp">WhatsApp Order</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="hero-trust-indicators">
+      <div class="trust-item"><strong>50K+</strong><span>Happy Customers</span></div>
+      <div class="trust-item"><strong>80+</strong><span>Product Varieties</span></div>
+      <div class="trust-item"><strong>25+</strong><span>Years Tradition</span></div>
+    </div>
+
+    <button class="hero-nav prev" onclick="moveSlide(-1)">&#10094;</button>
+    <button class="hero-nav next" onclick="moveSlide(1)">&#10095;</button>
+    <div class="hero-dots" id="heroDots">
+      <span class="dot active" onclick="currentSlide(0)"></span>
+      <span class="dot" onclick="currentSlide(1)"></span>
+      <span class="dot" onclick="currentSlide(2)"></span>
+      <span class="dot" onclick="currentSlide(3)"></span>
     </div>
   </section>
 

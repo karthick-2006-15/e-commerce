@@ -136,6 +136,7 @@ window.addEventListener('popstate', function(e) {
 // HOME
 // ============================================================
 async function initHome() {
+  initHeroCarousel();
   try {
     const res = await fetch(`${API_BASE}/categories`);
     const data = await res.json();
@@ -1261,3 +1262,48 @@ if (_homePage) _homePage.classList.add('active');
     history.replaceState({ page: 'home' }, '', '#home');
   }
 })();
+// ============================================================
+// HERO CAROUSEL
+// ============================================================
+let heroSlideIndex = 0;
+let heroInterval = null;
+
+function initHeroCarousel() {
+  const slides = document.querySelectorAll('.hero-slide');
+  if (!slides.length) return;
+  showHeroSlide(0);
+  startHeroCarousel();
+  
+  const heroEl = document.getElementById('heroCarousel');
+  if (heroEl) {
+    heroEl.addEventListener('mouseenter', () => clearInterval(heroInterval));
+    heroEl.addEventListener('mouseleave', startHeroCarousel);
+  }
+}
+
+function startHeroCarousel() {
+  clearInterval(heroInterval);
+  heroInterval = setInterval(() => moveSlide(1), 5000);
+}
+
+function moveSlide(step) {
+  const slides = document.querySelectorAll('.hero-slide');
+  heroSlideIndex = (heroSlideIndex + step + slides.length) % slides.length;
+  showHeroSlide(heroSlideIndex);
+}
+
+function currentSlide(n) {
+  heroSlideIndex = n;
+  showHeroSlide(heroSlideIndex);
+}
+
+function showHeroSlide(n) {
+  const slides = document.querySelectorAll('.hero-slide');
+  const dots = document.querySelectorAll('#heroDots .dot');
+  if (!slides.length) return;
+  slides.forEach(s => s.classList.remove('active'));
+  dots.forEach(d => d.classList.remove('active'));
+  slides[n].classList.add('active');
+  if(dots[n]) dots[n].classList.add('active');
+}
+
