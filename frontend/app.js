@@ -889,7 +889,7 @@ async function renderMyOrders() {
   listEl.innerHTML = `<div class="empty-state"><div class="spinner" style="border-top-color:var(--orange);border-color:var(--cream2);width:28px;height:28px;margin:0 auto 1rem"></div><p style="color:var(--text2)">Loading your orders...</p></div>`;
   let orders = [];
   try {
-    const data = await apiFetch('/orders/all');
+    const data = await apiFetch('/orders/my-orders');
     if (data.success && data.orders && data.orders.length) orders = data.orders;
     else throw new Error('no orders from api');
   } catch {
