@@ -1101,12 +1101,12 @@ function renderAbout() {
     grid.style.gap = '1.2rem';
   }
   const values = [
-    {icon:'<i class="ph ph-plant"></i>',title:'100% Fresh',    desc:'Every snack made fresh the same morning it reaches you.'},
-    {icon:'<i class="ph ph-flask"></i>',title:'Lab Tested',    desc:'Monthly NABL lab tests for quality and safety of all products.'},
-    {icon:'<i class="ph ph-recycle"></i>',title:'Eco-Friendly',  desc:'Biodegradable packaging and zero single-use plastic.'},
-    {icon:'<i class="ph ph-gift"></i>',title:'Community First',desc:'15% of profits go to "Hunger Free Chennai".'},
-    {icon:'<i class="ph ph-handshake"></i>',title:'Farmer Direct', desc:'We source directly from Tamil Nadu farmers.'},
-    {icon:'<i class="ph ph-medal"></i>',title:'Award Winning', desc:'Best Snack Brand in Chennai — Times Food Award 2019, 2021, 2023.'},
+    {icon:'<i class="ph ph-shield-check"></i>',title:'FSSAI Registered', desc:'Licensed under the Food Safety and Standards Authority of India.'},
+    {icon:'<i class="ph ph-cookie"></i>',title:'Freshly Prepared Daily', desc:'Made in small batches to ensure authentic taste and freshness.'},
+    {icon:'<i class="ph ph-package"></i>',title:'Secure Packaging', desc:'Carefully packed to preserve quality during transit.'},
+    {icon:'<i class="ph ph-truck"></i>',title:'Pan India Delivery', desc:'Reliable shipping to customers across India.'},
+    {icon:'<i class="ph ph-lock-key"></i>',title:'Secure Payments', desc:'Safe and protected checkout through trusted payment gateways.'},
+    {icon:'<i class="ph ph-star"></i>',title:'Quality Assured', desc:'Every order is checked before dispatch to maintain our standards.'},
   ];
   const el = document.getElementById('aboutValues');
   if (el) el.innerHTML = values.map(v =>
