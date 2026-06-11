@@ -488,7 +488,7 @@ async function updateOrderStatus() {
   if (!newStatus) { toast('No status selected', 'red'); return; }
 
   const o = allOrders.find(x => x.orderId === currentOrderId || x.id === currentOrderId || x._id === currentOrderId);
-  const dbId = o?._id || o?.orderId || currentOrderId;
+  const dbId = o?.orderId || currentOrderId;
 
   const btn = document.getElementById('updateStatusBtn');
   btn.textContent = 'Saving...';
