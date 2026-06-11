@@ -699,13 +699,7 @@ function renderCheckout() {
           <select id="ch-state"><option>Tamil Nadu</option><option>Karnataka</option><option>Andhra Pradesh</option><option>Kerala</option></select>
         </div>
       </div>
-      <div class="form-card">
-        <h3>Delivery Slot</h3>
-        <div class="delivery-slots" id="slotOptions">
-          ${['Today 2–4 PM','Today 4–6 PM','Tomorrow 10–12 PM','Tomorrow 2–4 PM'].map((s,i) =>
-            `<div class="slot-option ${i===0?'selected':''}" onclick="selectSlot(this,'${s}')">${s}</div>`).join('')}
-        </div>
-      </div>
+
       <div class="form-card">
         <h3>Payment Method</h3>
         <div class="payment-options">
@@ -1010,7 +1004,7 @@ function renderOrderDetailHTML(o) {
       </div>
       <div style="background:var(--white);border-radius:var(--radius-lg);padding:1.4rem;box-shadow:var(--shadow)">
         <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--orange);margin-bottom:1rem">Delivery Address</div>
-        ${o.address?`<div style="font-weight:600;color:var(--brown);margin-bottom:6px">${o.address.firstName||''} ${o.address.lastName||''}</div><div style="font-size:0.85rem;color:var(--text2);line-height:1.8">${o.address.line1||''}${o.address.line2?'<br>'+o.address.line2:''}<br>${o.address.city||''}, ${o.address.state||''} – ${o.address.pincode||''}<br>📞 ${o.address.phone||''}</div><div style="margin-top:1rem;padding-top:0.8rem;border-top:1px solid var(--cream2)"><div style="font-size:0.75rem;color:var(--text2)">🕐 Delivery Slot</div><div style="font-size:0.88rem;font-weight:600;color:var(--brown)">${o.deliverySlot||'—'}</div></div>`:'<p style="color:var(--text2);font-size:0.85rem">Address not available</p>'}
+        ${o.address?`<div style="font-weight:600;color:var(--brown);margin-bottom:6px">${o.address.firstName||''} ${o.address.lastName||''}</div><div style="font-size:0.85rem;color:var(--text2);line-height:1.8">${o.address.line1||''}${o.address.line2?'<br>'+o.address.line2:''}<br>${o.address.city||''}, ${o.address.state||''} – ${o.address.pincode||''}<br>📞 ${o.address.phone||''}</div>`:'<p style="color:var(--text2);font-size:0.85rem">Address not available</p>'}
       </div>
     </div>
     <div style="text-align:center;padding-bottom:1.5rem"><button class="btn-primary" onclick="navigate('shop')" style="font-size:0.88rem">Continue Shopping →</button></div>`;
@@ -1060,7 +1054,6 @@ function renderOrderSuccess(order) {
         <div style="background:var(--white);border-radius:var(--radius-lg);padding:1.5rem;box-shadow:var(--shadow)">
           <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--orange);margin-bottom:1rem">Order Info</div>
           <div style="font-size:0.85rem;color:var(--text2);line-height:2">
-            <div>🕐 Slot: <strong style="color:var(--brown)">${order.deliverySlot||'—'}</strong></div>
             <div>💳 Payment: <strong style="color:var(--brown)">${(order.payment?.method||'cod').toUpperCase()}</strong></div>
             <div>📅 Est. Delivery: <strong style="color:var(--brown)">${est}</strong></div>
           </div>
