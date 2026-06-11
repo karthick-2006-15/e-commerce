@@ -1055,7 +1055,7 @@ function renderOrderSuccess(order) {
       <div style="display:flex;flex-direction:column;gap:1.2rem">
         <div style="background:var(--white);border-radius:var(--radius-lg);padding:1.5rem;box-shadow:var(--shadow)">
           <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--orange);margin-bottom:1rem">Delivery Address</div>
-          ${order.address ? `<div style="font-size:0.9rem;color:var(--brown);font-weight:600;margin-bottom:4px">${order.address.firstName||''} ${order.address.lastName||''}</div><div style="font-size:0.85rem;color:var(--text2);line-height:1.7">${order.address.line1||''}${order.address.line2?', '+order.address.line2:''}<br>${order.address.city||''}, ${order.address.state||''} – ${order.address.pincode||''}<br>📞 ${order.address.phone||''}</div>` : '<p style="color:var(--text2);font-size:0.85rem">Address not available</p>'}
+          ${order.address ? `<div style="font-size:0.9rem;color:var(--brown);font-weight:600;margin-bottom:4px">${order.address.firstName||''} ${order.address.lastName||''}</div><div style="font-size:0.85rem;color:var(--text2);line-height:1.7;word-break:break-word;">${order.address.line1||''}${order.address.line2?', '+order.address.line2:''}<br>${order.address.city||''}, ${order.address.state||''} – ${order.address.pincode||''}<br>📞 ${order.address.phone||''}</div>` : '<p style="color:var(--text2);font-size:0.85rem">Address not available</p>'}
         </div>
         <div style="background:var(--white);border-radius:var(--radius-lg);padding:1.5rem;box-shadow:var(--shadow)">
           <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--orange);margin-bottom:1rem">Order Info</div>

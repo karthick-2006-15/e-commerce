@@ -459,7 +459,7 @@ function viewOrder(orderId) {
     ${o.address ? `
     <div style="background:var(--surface2);border-radius:var(--radius);padding:1rem;margin-bottom:1rem">
       <div style="font-size:0.72rem;color:var(--text2);text-transform:uppercase;margin-bottom:6px">Delivery Address</div>
-      <div style="font-size:0.88rem;color:var(--text);line-height:1.6">
+      <div style="font-size:0.88rem;color:var(--text);line-height:1.6;word-break:break-word;">
         <strong>${o.address.firstName} ${o.address.lastName||''}</strong><br>
         ${o.address.line1||''}${o.address.line2?', '+o.address.line2:''}<br>
         ${o.address.city||''}, ${o.address.state||''} – ${o.address.pincode||''}<br>

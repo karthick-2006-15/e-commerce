@@ -540,13 +540,15 @@ input, select, textarea { font-family: 'DM Sans', sans-serif; }
   padding: 8px 18px; border-radius: var(--r-full);
   background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3);
   color: white; font-size: 0.85rem; font-weight: 600; cursor: pointer;
-  white-space: nowrap; transition: all var(--t-fast);
+  padding: 6px 16px; border-radius: 20px; font-size: 0.88rem; font-weight: 600;
+  cursor: pointer; transition: all 0.2s; white-space: nowrap;
+  background: var(--cream2); color: var(--brown); border: 1px solid transparent;
 }
 .shop-category-chips .chip:hover {
-  background: rgba(255,255,255,0.25);
+  background: var(--cream); border-color: var(--orange-pale);
 }
 .shop-category-chips .chip.active {
-  background: var(--orange); border-color: var(--orange);
+  background: var(--orange); color: var(--white); border-color: var(--orange);
 }
 .shop-layout {
   display: grid; grid-template-columns: 260px 1fr; gap: 2.5rem;
@@ -751,6 +753,18 @@ input, select, textarea { font-family: 'DM Sans', sans-serif; }
 }
 .slot-option:hover { border-color: var(--orange2); }
 .slot-option.selected { border-color: var(--orange); background: var(--orange-pale); color: var(--orange); font-weight: 600; }
+
+.order-details-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.2rem;
+  margin-bottom: 1.2rem;
+}
+
+.delivery-address-container {
+  word-break: break-word;
+  white-space: pre-wrap;
+}
 
 /* ============================================================
    MY ORDERS
