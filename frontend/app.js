@@ -3,7 +3,7 @@
 // ============================================================
 const API_BASE = window.location.origin + '/api';
 let RAZORPAY_KEY = 'rzp_test_SgoJAptrv9wz1j'; // fallback
-apiFetch('/config').then(data => { if(data.success && data.razorpayKeyId) RAZORPAY_KEY = data.razorpayKeyId; }).catch(()=>{});
+apiFetch('/config').then(data => { if(data.success && data.razorpayKeyId) RAZORPAY_KEY = data.razorpayKeyId.trim(); }).catch(()=>{});
 
 const FALLBACK_CATEGORIES = [
   { name:'Murukku',  image:'https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=400&q=80', count:18 },
@@ -1235,10 +1235,6 @@ function closeMobileMenu()  { document.getElementById('mobileMenu').classList.re
   } catch { localStorage.removeItem('swamy_last_order'); }
 })();
 
-initHome();
-updateCartBadge();
-updateLoginUI();
-
 // ── Boot: show home page and seed the history stack ──────────
 // Ensure home page is visible on load
 document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -1306,4 +1302,11 @@ function showHeroSlide(n) {
   slides[n].classList.add('active');
   if(dots[n]) dots[n].classList.add('active');
 }
+
+// ============================================================
+// BOOTSTRAP
+// ============================================================
+initHome();
+updateCartBadge();
+updateLoginUI();
 

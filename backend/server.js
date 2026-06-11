@@ -91,7 +91,7 @@ app.get('/api/health2', async (req, res) => {
 });
 
 app.get('/api/config', (req, res) => {
-  res.json({ success: true, razorpayKeyId: process.env.RAZORPAY_KEY_ID });
+  res.json({ success: true, razorpayKeyId: (process.env.RAZORPAY_KEY_ID || '').trim() });
 });
 
 // ─── Serve Frontend ───────────────────────────────────────────
