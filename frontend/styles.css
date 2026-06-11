@@ -1099,6 +1099,7 @@ footer::before {
   .cart-item-img { width: 60px; height: 60px; }
   .cart-item-name { font-size: 0.86rem; }
   .cart-summary { position: static; padding: 1.2rem; }
+  .order-details-grid { grid-template-columns: 1fr; }
 
   .checkout-layout { padding: 1rem; gap: 1rem; }
   .form-card { padding: 1.2rem; }

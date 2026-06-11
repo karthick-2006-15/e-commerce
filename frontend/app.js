@@ -1001,7 +1001,7 @@ function renderOrderDetailHTML(o) {
       </div>
       <div style="margin-top:1rem;background:var(--orange-pale);border-radius:var(--radius);padding:0.8rem 1rem;font-size:0.88rem;color:var(--brown);font-weight:600;text-align:center">🕐 ${stepLabels[currentIdx]} — ${stepTimes[currentIdx]}</div>
     </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem">
+    <div class="order-details-grid">
       <div style="background:var(--white);border-radius:var(--radius-lg);padding:1.4rem;box-shadow:var(--shadow)">
         <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--orange);margin-bottom:1rem">Items Ordered</div>
         ${(o.items||[]).map(i=>`<div style="display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--cream2)"><div style="width:40px;height:40px;border-radius:8px;background:var(--cream2);overflow:hidden;flex-shrink:0">${i.image?`<img src="${i.image}" loading="lazy" style="width:100%;height:100%;object-fit:cover" onerror="this.parentElement.innerHTML='🍿'"/>`:'<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:1rem">🍿</div>'}</div><div style="flex:1;min-width:0"><div style="font-size:0.85rem;font-weight:600;color:var(--brown);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${i.name}</div><div style="font-size:0.72rem;color:var(--text2)">${i.weight||''} × ${i.qty||1}</div></div><div style="font-weight:700;color:var(--brown);font-size:0.85rem;flex-shrink:0">₹${(i.price||0)*(i.qty||1)}</div></div>`).join('')}
@@ -1045,7 +1045,7 @@ function renderOrderSuccess(order) {
         `).join('')}
       </div>
     </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-bottom:1.2rem">
+    <div class="order-details-grid">
       <div style="background:var(--white);border-radius:var(--radius-lg);padding:1.5rem;box-shadow:var(--shadow)">
         <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--orange);margin-bottom:1rem">Items Ordered</div>
         ${(order.items||[]).map(i => `<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--cream2)"><div style="width:42px;height:42px;border-radius:8px;background:var(--cream2);overflow:hidden;flex-shrink:0">${i.image?`<img src="${i.image}" loading="lazy" style="width:100%;height:100%;object-fit:cover"/>`:'<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:1.3rem">🍿</div>'}</div><div style="flex:1;min-width:0"><div style="font-size:0.88rem;font-weight:600;color:var(--brown);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${i.name}</div><div style="font-size:0.75rem;color:var(--text2)">${i.weight||''} × ${i.qty}</div></div><div style="font-weight:700;color:var(--brown);font-size:0.9rem;flex-shrink:0">₹${i.price*i.qty}</div></div>`).join('')}
