@@ -257,7 +257,7 @@ function productCard(p) {
     <div class="product-card-img" onclick="openProduct('${pid}')">
       ${p.badge ? `<div class="product-badge">${p.badge}</div>` : ''}
       ${p.image
-        ? `<img src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.onerror=null;this.parentElement.innerHTML='<div class=\'img-fallback\'>🍿</div>';"/>`
+        ? `<img src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.onerror=null;this.parentElement.innerHTML='🍿';" style="object-fit:cover;width:100%;height:100%;"/>`
         : `<div class="img-fallback">🍿</div>`}
       <div class="product-card-img-overlay"></div>
       <button class="wishlist-btn ${wishlisted ? 'active' : ''}" onclick="toggleWishlist(event,'${pid}')">
@@ -412,7 +412,7 @@ async function openProduct(pid, opts = {}) {
 
   const mainImg = document.getElementById('mainProductImg');
   if (p.image) {
-    mainImg.innerHTML = `<img src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.onerror=null;this.parentElement.innerHTML='<div class=\'img-fallback\' style=\'position:absolute;inset:0;font-size:4rem\'>🍿</div>'"/>`;
+    mainImg.innerHTML = `<img src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.onerror=null;this.parentElement.innerHTML='🍿';this.parentElement.style.display='flex';this.parentElement.style.alignItems='center';this.parentElement.style.justifyContent='center';this.parentElement.style.fontSize='4rem';"/>`;
   } else {
     mainImg.innerHTML = `<div class="img-fallback" style="position:absolute;inset:0;font-size:4rem">🍿</div>`;
   }
@@ -586,7 +586,7 @@ function renderCart() {
         if (!p) return '';
         return `<div class="cart-item">
           <div class="cart-item-img">
-            ${p.image ? `<img src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.onerror=null;this.parentElement.innerHTML='<div style=\'display:flex;align-items:center;justify-content:center;font-size:2rem;width:100%;height:100%\'>🍿</div>'"/>` : '<div style="display:flex;align-items:center;justify-content:center;font-size:2rem;width:100%;height:100%">🍿</div>'}
+            ${p.image ? `<img src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.onerror=null;this.parentElement.innerHTML='🍿';this.parentElement.style.display='flex';this.parentElement.style.alignItems='center';this.parentElement.style.justifyContent='center';this.parentElement.style.fontSize='2rem';"/>` : '<div style="display:flex;align-items:center;justify-content:center;font-size:2rem;width:100%;height:100%">🍿</div>'}
           </div>
           <div class="cart-item-info">
             <div class="cart-item-name">${p.name}</div>
@@ -779,7 +779,7 @@ async function openRazorpay(amount, addr) {
     }
 
     const options = {
-      key: RAZORPAY_KEY,
+      key: res.razorpayKeyId || RAZORPAY_KEY,
       amount: total * 100,
       currency: 'INR',
       name: 'Swamy Bakery',
@@ -912,7 +912,7 @@ async function renderMyOrders() {
     return `
       <div class="order-row" onclick="openOrderDetail('${orderId}')">
         <div class="order-row-thumb">
-          ${thumb ? `<img src="${thumb}" alt="Order" loading="lazy" onerror="this.onerror=null;this.parentElement.innerHTML='<div style=\'width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:1.5rem\'>🍿</div>'"/>` : '<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:1.5rem">🍿</div>'}
+          ${thumb ? `<img src="${thumb}" alt="Order" loading="lazy" onerror="this.onerror=null;this.parentElement.innerHTML='🍿';this.parentElement.style.display='flex';this.parentElement.style.alignItems='center';this.parentElement.style.justifyContent='center';this.parentElement.style.fontSize='1.5rem';"/>` : '<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:1.5rem">🍿</div>'}
         </div>
         <div class="order-row-info">
           <div class="order-row-id">Order #${orderId}</div>

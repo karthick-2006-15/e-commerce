@@ -67,7 +67,12 @@ router.post('/create-order', auth, async (req, res) => {
       estimatedDelivery: new Date(Date.now() + 4 * 3600000).toISOString(),
     });
 
-    res.json({ success: true, razorpayOrderId: rzpOrder.id, mongoOrderId: order.orderId });
+    res.json({ 
+      success: true, 
+      razorpayOrderId: rzpOrder.id, 
+      mongoOrderId: order.orderId,
+      razorpayKeyId: (process.env.RAZORPAY_KEY_ID || '').trim()
+    });
   } catch (err) {
     console.error('Razorpay Order Creation Error:', err);
     res.status(500).json({ success: false, message: err.message });
