@@ -30,14 +30,7 @@ const LOCAL_PRODUCTS = [
   { id:12, name:'Chivda Mix',      category:'Mixture', price:119, pricePerKg:397, oldPrice:149, weight:'300g', image:'https://images.unsplash.com/photo-1609501676725-7186f017a4b7?w=600&q=80', badge:'Light',     rating:4.6, reviews:203, description:'Poha-based light and crunchy snack with peanuts.' },
 ];
 
-const REVIEWS = [
-  {name:'Priya Raman',      location:'Mylapore',        text:"Swamy Bakery has been our family's go-to for 15 years! The murukku and mixture are absolutely addictive. Best in Chennai!", stars:'★★★★★', initials:'PR'},
-  {name:'Karthik Shankar',  location:'Anna Nagar',      text:"Ordered 50 boxes of Mysore Pak for our office Diwali gifts. Delivered on time, packaging gorgeous, everyone loved them!", stars:'★★★★★', initials:'KS'},
-  {name:'Meena Subramaniam',location:'T. Nagar',        text:"The banana chips are now a daily snack at home. Crispy, fresh, and fried in coconut oil. Delivery always punctual.", stars:'★★★★☆', initials:'MS'},
-  {name:'Arjun K',          location:'Adyar',           text:"Got a custom Diwali hamper — 6 varieties, beautiful box, tasted even better than I imagined. So professional!", stars:'★★★★★', initials:'AK'},
-  {name:'Lakshmi V',        location:'Velachery',       text:"The boondi ladoo is seasonal magic. So perfectly proportioned, not too sweet. I wait for it every festive season!", stars:'★★★★★', initials:'LV'},
-  {name:'Raj Iyer',         location:'Nungambakkam',    text:"My daughter loves the coconut burfi. Made with real coconut and ghee — you can taste the quality difference!", stars:'★★★★★', initials:'RI'},
-];
+const REVIEWS = []; // To be populated dynamically from backend
 
 // ============================================================
 // STATE
@@ -165,15 +158,21 @@ async function initHome() {
     </div>`).join('');
 
   const revEl = document.getElementById('homeReviews');
-  if (revEl) revEl.innerHTML = REVIEWS.map(r =>
-    `<div class="review-card">
-      <div class="review-stars">${r.stars}</div>
-      <p class="review-text">"${r.text}"</p>
-      <div class="reviewer">
-        <div class="reviewer-avatar">${r.initials}</div>
-        <div><div class="reviewer-name">${r.name}</div><div class="reviewer-location">${r.location}</div></div>
-      </div>
-    </div>`).join('');
+  if (revEl) {
+    if (REVIEWS.length > 0) {
+      revEl.innerHTML = REVIEWS.map(r =>
+        `<div class="review-card">
+          <div class="review-stars">${r.stars}</div>
+          <p class="review-text">"${r.text}"</p>
+          <div class="reviewer">
+            <div class="reviewer-avatar">${r.initials}</div>
+            <div><div class="reviewer-name">${r.name}</div><div class="reviewer-location">${r.location}</div></div>
+          </div>
+        </div>`).join('');
+    } else {
+      revEl.innerHTML = `<div style="grid-column: 1 / -1; text-align: center; padding: 2rem; color: var(--text2); background: var(--white); border-radius: var(--r-lg);">Customer reviews will be updated soon!</div>`;
+    }
+  }
 
   try {
     const data = await apiFetch('/products');
@@ -359,6 +358,18 @@ function sortProducts() {
 
 function toggleFilters() { document.getElementById('shopFilters').classList.toggle('open'); }
 
+function setCategoryFilter(cat, btnElement) {
+  // Update UI active state
+  document.querySelectorAll('#shopCategoryChips .chip').forEach(el => el.classList.remove('active'));
+  if (btnElement) btnElement.classList.add('active');
+
+  if (cat === 'All') {
+    shopProductsFiltered = allProducts.filter(p => p.price <= maxPrice);
+  } else {
+    shopProductsFiltered = allProducts.filter(p => p.category === cat && p.price <= maxPrice);
+  }
+  renderShopGrid();
+}
 function searchProducts(query) {
   const q = (query || '').toLowerCase().trim();
   if (!q) {
@@ -1269,6 +1280,19 @@ function initHeroCarousel() {
   if (!slides.length) return;
   showHeroSlide(0);
   startHeroCarousel();
+
+  // Swipe support
+  let startX = 0;
+  const carousel = document.getElementById('heroCarousel');
+  if (carousel) {
+    carousel.addEventListener('touchstart', e => startX = e.changedTouches[0].screenX, {passive: true});
+    carousel.addEventListener('touchend', e => {
+      let endX = e.changedTouches[0].screenX;
+      if (startX - endX > 50) moveSlide(1); // Swipe left
+      if (endX - startX > 50) moveSlide(-1); // Swipe right
+      startHeroCarousel(); // Reset timer on interaction
+    }, {passive: true});
+  }
 }
 
 function startHeroCarousel() {

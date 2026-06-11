@@ -70,11 +70,11 @@
       <div class="hero-slide active" style="background-image: url('assets/hero-snacks.png');">
         <div class="hero-overlay"></div>
         <div class="hero-content">
-          <h1 class="hero-title">Traditional Snacks Made Fresh Daily</h1>
-          <p class="hero-subtitle">Authentic South Indian snacks prepared with quality ingredients and delivered to your doorstep.</p>
+          <h1 class="hero-title">Fresh Homemade Snacks Delivered Across India</h1>
+          <p class="hero-subtitle">Authentic sweets, mixtures, and traditional snacks prepared with quality ingredients and delivered fresh to your doorstep.</p>
           <div class="hero-actions">
-            <button class="btn-primary" onclick="navigate('shop')">Shop Snacks</button>
-            <a href="https://wa.me/919080729355" target="_blank" class="btn-whatsapp">WhatsApp Order</a>
+            <button class="btn-primary" onclick="navigate('shop')">Shop Now</button>
+            <button class="btn-outline" style="color:white; border-color:white;" onclick="document.getElementById('homeCategories').scrollIntoView({behavior:'smooth'})">View Categories</button>
           </div>
         </div>
       </div>
@@ -82,7 +82,7 @@
       <div class="hero-slide" style="background-image: url('assets/hero-sweets.png');">
         <div class="hero-overlay"></div>
         <div class="hero-content">
-          <h1 class="hero-title">Delicious Indian Sweets for Every Occasion</h1>
+          <h1 class="hero-title">Traditional Sweets</h1>
           <p class="hero-subtitle">Handcrafted sweets made using traditional recipes and pure ingredients.</p>
           <div class="hero-actions">
             <button class="btn-primary" onclick="navigate('shop')">Explore Sweets</button>
@@ -94,11 +94,10 @@
       <div class="hero-slide" style="background-image: url('assets/hero-bakery.png');">
         <div class="hero-overlay"></div>
         <div class="hero-content">
-          <h1 class="hero-title">Fresh Bakery Delights</h1>
-          <p class="hero-subtitle">Cookies, biscuits, cakes, breads, and baked treats made fresh every day.</p>
+          <h1 class="hero-title">Madras Mixture & Murukku</h1>
+          <p class="hero-subtitle">Crispy, spicy, and perfectly fried. The ultimate evening companions.</p>
           <div class="hero-actions">
-            <button class="btn-primary" onclick="navigate('shop')">Browse Bakery</button>
-            <a href="https://wa.me/919080729355" target="_blank" class="btn-whatsapp">WhatsApp Order</a>
+            <button class="btn-primary" onclick="navigate('shop')">Shop Savouries</button>
           </div>
         </div>
       </div>
@@ -106,29 +105,34 @@
       <div class="hero-slide" style="background-image: url('assets/hero-brand.png');">
         <div class="hero-overlay"></div>
         <div class="hero-content">
-          <h1 class="hero-title">Swamy Bakery Since 2000</h1>
-          <p class="hero-subtitle">Serving families with authentic taste, quality products, and trusted service for over 25 years.</p>
+          <h1 class="hero-title">Combo Gift Packs</h1>
+          <p class="hero-subtitle">Curated snack hampers for every festive occasion.</p>
           <div class="hero-actions">
-            <button class="btn-primary" onclick="navigate('about')">Our Story</button>
-            <a href="https://wa.me/919080729355" target="_blank" class="btn-whatsapp">WhatsApp Order</a>
+            <button class="btn-primary" onclick="navigate('shop')">View Combos</button>
           </div>
         </div>
       </div>
     </div>
     
-    <div class="hero-trust-indicators">
-      <div class="trust-item"><strong>50K+</strong><span>Happy Customers</span></div>
-      <div class="trust-item"><strong>80+</strong><span>Product Varieties</span></div>
-      <div class="trust-item"><strong>25+</strong><span>Years Tradition</span></div>
-    </div>
-
-    <button class="hero-nav prev" onclick="moveSlide(-1)">&#10094;</button>
-    <button class="hero-nav next" onclick="moveSlide(1)">&#10095;</button>
+    <button class="hero-nav prev" aria-label="Previous Slide" onclick="moveSlide(-1)">&#10094;</button>
+    <button class="hero-nav next" aria-label="Next Slide" onclick="moveSlide(1)">&#10095;</button>
     <div class="hero-dots" id="heroDots">
       <span class="dot active" onclick="currentSlide(0)"></span>
       <span class="dot" onclick="currentSlide(1)"></span>
       <span class="dot" onclick="currentSlide(2)"></span>
       <span class="dot" onclick="currentSlide(3)"></span>
+    </div>
+  </section>
+
+  <!-- AUTHENTIC TRUST BAR -->
+  <section class="trust-bar-section bg-cream2" style="padding: 1.5rem 1rem; border-bottom: 1px solid var(--cream3);">
+    <div class="section-inner">
+      <div class="trust-bar" style="display:flex; justify-content:space-around; align-items:center; flex-wrap:wrap; gap:1rem;">
+        <div class="trust-badge" style="display:flex; align-items:center; gap:8px;"><span style="color:var(--orange); font-size:1.2rem;">✓</span><span style="font-weight:600; font-size:0.95rem; color:var(--brown);">Freshly Prepared</span></div>
+        <div class="trust-badge" style="display:flex; align-items:center; gap:8px;"><span style="color:var(--orange); font-size:1.2rem;">✓</span><span style="font-weight:600; font-size:0.95rem; color:var(--brown);">Secure Payments</span></div>
+        <div class="trust-badge" style="display:flex; align-items:center; gap:8px;"><span style="color:var(--orange); font-size:1.2rem;">✓</span><span style="font-weight:600; font-size:0.95rem; color:var(--brown);">Fast Shipping</span></div>
+        <div class="trust-badge" style="display:flex; align-items:center; gap:8px;"><span style="color:var(--orange); font-size:1.2rem;">✓</span><span style="font-weight:600; font-size:0.95rem; color:var(--brown);">Quality Ingredients</span></div>
+      </div>
     </div>
   </section>
 
@@ -209,6 +213,14 @@
       <div class="shop-search-wrap">
         <span class="shop-search-icon">🔍</span>
         <input type="text" class="shop-search" id="shopSearch" placeholder="Search snacks, sweets, cakes..." oninput="searchProducts(this.value)"/>
+      </div>
+      <div class="shop-category-chips" id="shopCategoryChips">
+        <button class="chip active" onclick="setCategoryFilter('All', this)">All</button>
+        <button class="chip" onclick="setCategoryFilter('Mixture', this)">Mixture</button>
+        <button class="chip" onclick="setCategoryFilter('Sweets', this)">Sweets</button>
+        <button class="chip" onclick="setCategoryFilter('Snacks', this)">Snacks</button>
+        <button class="chip" onclick="setCategoryFilter('Murukku', this)">Murukku</button>
+        <button class="chip" onclick="setCategoryFilter('Combo Packs', this)">Combo Packs</button>
       </div>
     </div>
   </div>
