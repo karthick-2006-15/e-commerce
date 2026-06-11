@@ -30,7 +30,12 @@ const LOCAL_PRODUCTS = [
   { id:12, name:'Chivda Mix',      category:'Mixture', price:119, pricePerKg:397, oldPrice:149, weight:'300g', image:'https://images.unsplash.com/photo-1609501676725-7186f017a4b7?w=600&q=80', badge:'Light',     rating:4.6, reviews:203, description:'Poha-based light and crunchy snack with peanuts.' },
 ];
 
-const REVIEWS = []; // To be populated dynamically from backend
+const REVIEWS = [
+  { stars: "★★★★★", text: "The Banana Chips are incredibly fresh and crispy! Just the right amount of salt, cooked in pure coconut oil. Tastes just like home.", initials: "PK", name: "Priya K.", location: "Chennai" },
+  { stars: "★★★★★", text: "I've ordered their signature mixture several times. The quality is consistently excellent, and the packaging ensures nothing gets crushed during delivery.", initials: "RA", name: "Rahul A.", location: "Bangalore" },
+  { stars: "★★★★★", text: "The Mysore Pak melts in your mouth! You can really taste the pure ghee. Swamy Bakery is now my go-to place for all festive sweets.", initials: "SM", name: "Sneha M.", location: "Coimbatore" },
+  { stars: "★★★★☆", text: "Very prompt delivery and great customer service. The combo gift packs are perfect for Diwali gifting. Highly recommended!", initials: "VT", name: "Varun T.", location: "Madurai" }
+];
 
 // ============================================================
 // STATE
