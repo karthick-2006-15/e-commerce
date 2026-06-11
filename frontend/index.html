@@ -11,6 +11,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400;1,600&family=DM+Sans:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@1,600&display=swap" rel="stylesheet"/>
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <link rel="stylesheet" href="/styles.css">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
 </head>
 <body>
 
@@ -21,7 +22,7 @@
     Cart
     <span class="sbb-cart-badge" id="sbbBadge">0</span>
   </button>
-  <button class="sbb-order" onclick="navigate('shop')">🛒 Order Now</button>
+  <button class="sbb-order" onclick="navigate('shop')"><i class="ph ph-shopping-cart"></i> Order Now</button>
 </div>
 
 <nav class="nav" id="mainNav">
@@ -54,12 +55,12 @@
 </nav>
 
 <div class="mobile-menu" id="mobileMenu">
-  <a onclick="navigate('home');closeMobileMenu()">🏠 Home</a>
-  <a onclick="navigate('shop');closeMobileMenu()">🛒 Shop</a>
-  <a onclick="navigate('about');closeMobileMenu()">📖 About Us</a>
-  <a onclick="navigate('contact');closeMobileMenu()">📞 Contact</a>
-  <a onclick="navigate('myorders');closeMobileMenu()">📦 My Orders</a>
-  <a onclick="handleLoginClick();closeMobileMenu()">👤 Login / Sign Up</a>
+  <a onclick="navigate('home');closeMobileMenu()"><i class="ph ph-house"></i> Home</a>
+  <a onclick="navigate('shop');closeMobileMenu()"><i class="ph ph-shopping-cart"></i> Shop</a>
+  <a onclick="navigate('about');closeMobileMenu()"><i class="ph ph-book-open"></i> About Us</a>
+  <a onclick="navigate('contact');closeMobileMenu()"><i class="ph ph-phone"></i> Contact</a>
+  <a onclick="navigate('myorders');closeMobileMenu()"><i class="ph ph-package"></i> My Orders</a>
+  <a onclick="handleLoginClick();closeMobileMenu()"><i class="ph ph-user"></i> Login / Sign Up</a>
 </div>
 
 <!-- HOME -->
@@ -169,10 +170,10 @@
         <p class="section-sub">Quality, trust and authentic taste — baked into everything we do</p>
       </div>
       <div class="values-grid">
-        <div class="value-card"><div class="value-icon">🌾</div><h3>Pure Ingredients</h3><p>No preservatives, no artificial flavours. Only the finest natural ingredients sourced fresh daily.</p></div>
-        <div class="value-card"><div class="value-icon">🏭</div><h3>Hygienic Kitchen</h3><p>FSSAI certified facility with daily sanitisation and stringent quality checks at every step.</p></div>
-        <div class="value-card"><div class="value-icon">🚚</div><h3>Same Day Delivery</h3><p>Order before 12 PM for same-day delivery. Fresh from kitchen to your door, guaranteed.</p></div>
-        <div class="value-card"><div class="value-icon">🎁</div><h3>Custom Gift Packs</h3><p>Curate a personalised snack hamper for birthdays, Diwali, and every occasion worth celebrating.</p></div>
+        <div class="value-card"><div class="value-icon"><i class="ph ph-plant"></i></div><h3>Pure Ingredients</h3><p>No preservatives, no artificial flavours. Only the finest natural ingredients sourced fresh daily.</p></div>
+        <div class="value-card"><div class="value-icon"><i class="ph ph-factory"></i></div><h3>Hygienic Kitchen</h3><p>FSSAI certified facility with daily sanitisation and stringent quality checks at every step.</p></div>
+        <div class="value-card"><div class="value-icon"><i class="ph ph-truck"></i></div><h3>Same Day Delivery</h3><p>Order before 12 PM for same-day delivery. Fresh from kitchen to your door, guaranteed.</p></div>
+        <div class="value-card"><div class="value-icon"><i class="ph ph-gift"></i></div><h3>Custom Gift Packs</h3><p>Curate a personalised snack hamper for birthdays, Diwali, and every occasion worth celebrating.</p></div>
       </div>
     </div>
   </section>
@@ -191,11 +192,11 @@
   <section class="section bg-cream2">
     <div class="section-inner">
       <div class="cta-banner">
-        <div class="cta-banner-tag">✨ Limited Time Offer</div>
+        <div class="cta-banner-tag"><i class="ph ph-sparkle"></i> Limited Time Offer</div>
         <h2>Ready to Order? Get 10% Off Your First Order!</h2>
         <p>Join 50,000+ happy snack lovers. Use the code below at checkout.</p>
         <div class="cta-code">SWAMY10</div><br>
-        <button class="btn-gold" onclick="navigate('shop')">Order Now 🛒</button>
+        <button class="btn-gold" onclick="navigate('shop')">Order Now <i class="ph ph-shopping-cart"></i></button>
       </div>
     </div>
   </section>
@@ -208,7 +209,7 @@
       <h1>Our Snack Shop</h1>
       <p>Freshly made snacks — delivered to your doorstep</p>
       <div class="shop-search-wrap">
-        <span class="shop-search-icon">🔍</span>
+        <span class="shop-search-icon"><i class="ph ph-magnifying-glass"></i></span>
         <input type="text" class="shop-search" id="shopSearch" placeholder="Search snacks, sweets, cakes..." oninput="searchProducts(this.value)"/>
       </div>
       <div class="shop-category-chips" id="shopCategoryChips">
@@ -277,7 +278,7 @@
 <div class="page" id="page-cart">
   <div style="background:var(--cream2);padding:2rem;border-bottom:1px solid var(--glass-border)">
     <div style="max-width:1260px;margin:0 auto">
-      <h1 style="font-size:1.9rem;color:var(--brown)">Your Cart 🛒</h1>
+      <h1 style="font-size:1.9rem;color:var(--brown)">Your Cart <i class="ph ph-shopping-cart"></i></h1>
       <p style="color:var(--text2);margin-top:4px;font-size:0.9rem">Review your items before checkout</p>
     </div>
   </div>
@@ -299,7 +300,7 @@
 <div class="page" id="page-myorders">
   <div style="background:var(--cream2);padding:2rem;border-bottom:1px solid var(--glass-border)">
     <div style="max-width:900px;margin:0 auto">
-      <h1 style="font-size:1.9rem;color:var(--brown);margin-bottom:0.3rem">My Orders 📦</h1>
+      <h1 style="font-size:1.9rem;color:var(--brown);margin-bottom:0.3rem">My Orders <i class="ph ph-package"></i></h1>
       <p style="color:var(--text2);font-size:0.9rem">Click any order to see details and track it live</p>
     </div>
   </div>
@@ -313,7 +314,7 @@
 <!-- ABOUT -->
 <div class="page" id="page-about">
   <div class="about-hero">
-    <div class="hero-eyebrow" style="margin:0 auto 1.2rem;width:fit-content;border-color:rgba(212,160,67,0.30);color:var(--orange)">🏆 25 Years of Snacking Excellence</div>
+    <div class="hero-eyebrow" style="margin:0 auto 1.2rem;width:fit-content;border-color:rgba(212,160,67,0.30);color:var(--orange)"><i class="ph ph-trophy"></i> 25 Years of Snacking Excellence</div>
     <h1>Our Story</h1>
     <p>From Kanyakumari to every home — every snack, every sweet carries a piece of our heart.</p>
   </div>
@@ -352,25 +353,25 @@
     <div class="contact-info">
       <h3>Contact Information</h3>
       <div class="contact-detail">
-        <div class="contact-detail-icon">📍</div>
+        <div class="contact-detail-icon"><i class="ph ph-map-pin"></i></div>
         <div class="contact-detail-text"><strong>Address</strong><span><a href="https://www.google.com/maps?q=8.20043516599492,77.30374695299265" target="_blank" style="color:rgba(253,248,240,0.65);text-decoration:underline">View on Google Maps</a></span></div>
       </div>
       <div class="contact-detail">
-        <div class="contact-detail-icon">📞</div>
+        <div class="contact-detail-icon"><i class="ph ph-phone"></i></div>
         <div class="contact-detail-text"><strong>Phone</strong><span>+91 90807 29355</span></div>
       </div>
       <div class="contact-detail">
-        <div class="contact-detail-icon">✉️</div>
+        <div class="contact-detail-icon"><i class="ph ph-envelope"></i></div>
         <div class="contact-detail-text"><strong>Email</strong><span>swamybakery3@gmail.com</span></div>
       </div>
       <div class="contact-detail">
-        <div class="contact-detail-icon">🕐</div>
+        <div class="contact-detail-icon"><i class="ph ph-clock"></i></div>
         <div class="contact-detail-text"><strong>Hours</strong><span>Mon–Sat: 6 AM – 9 PM · Sun: 7 AM – 7 PM</span></div>
       </div>
       <div class="social-links">
-        <div class="social-btn">📘</div>
-        <a href="https://instagram.com/swamy_bakery" target="_blank" style="text-decoration:none;color:inherit;"><div class="social-btn">📸</div></a>
-        <div class="social-btn">🐦</div>
+        <div class="social-btn"><i class="ph ph-facebook-logo"></i></div>
+        <a href="https://instagram.com/swamy_bakery" target="_blank" style="text-decoration:none;color:inherit;"><div class="social-btn"><i class="ph ph-instagram-logo"></i></div></a>
+        <div class="social-btn"><i class="ph ph-twitter-logo"></i></div>
       </div>
     </div>
     <div class="contact-form-card">
@@ -395,12 +396,12 @@
 <!-- WISHLIST -->
 <div class="page" id="page-wishlist">
   <div style="background:var(--cream2);padding:2rem;border-bottom:1px solid var(--glass-border)">
-    <div style="max-width:1260px;margin:0 auto"><h1 style="font-size:1.9rem;color:var(--brown)">My Wishlist ❤️</h1></div>
+    <div style="max-width:1260px;margin:0 auto"><h1 style="font-size:1.9rem;color:var(--brown)">My Wishlist <i class="ph ph-heart"></i></h1></div>
   </div>
   <div style="max-width:1260px;margin:0 auto;padding:2.5rem 2rem">
     <div class="products-grid" id="wishlistProducts"></div>
     <div id="wishlistEmpty" class="empty-state" style="display:none">
-      <div class="empty-icon">💝</div>
+      <div class="empty-icon"><i class="ph ph-gift"></i></div>
       <h3>Your wishlist is empty</h3>
       <p>Save your favourite snacks to find them easily later</p>
       <button class="btn-primary" onclick="navigate('shop')">Browse Snacks →</button>
@@ -412,7 +413,7 @@
 <div class="page" id="page-order-success">
   <div style="background:linear-gradient(135deg,var(--brown) 0%,#5E3018 100%);padding:3rem 2rem;text-align:center;position:relative;overflow:hidden">
     <div style="position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 50% 0%,rgba(212,160,67,0.15) 0%,transparent 60%);pointer-events:none"></div>
-    <div style="font-size:4rem;margin-bottom:1rem;position:relative">🎉</div>
+    <div style="font-size:4rem;margin-bottom:1rem;position:relative"><i class="ph ph-confetti"></i></div>
     <h2 style="font-size:2rem;color:var(--cream);margin-bottom:0.5rem;position:relative">Order Confirmed!</h2>
     <p style="color:rgba(253,248,240,0.72);font-size:1rem;position:relative">Thank you for choosing Swamy Bakery</p>
     <div style="display:inline-block;background:rgba(255,255,255,0.12);border-radius:100px;padding:8px 24px;margin-top:1rem;position:relative;backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.15)">
@@ -427,7 +428,7 @@
     <div class="footer-grid">
       <div class="footer-brand">
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:0.2rem">
-          <div style="width:40px;height:40px;background:linear-gradient(135deg,var(--orange),var(--orange2));border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:0 4px 16px rgba(232,99,42,0.30)">🍪</div>
+          <div style="width:40px;height:40px;background:linear-gradient(135deg,var(--orange),var(--orange2));border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:0 4px 16px rgba(232,99,42,0.30)"><i class="ph ph-cookie"></i></div>
           <div style="font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--cream);font-weight:700">Swamy Bakery</div>
         </div>
         <p>Freshly made snacks, delivered to your door since 2000. Pure ingredients. Pure love.</p>
@@ -438,11 +439,11 @@
     </div>
     <hr class="footer-divider"/>
     <div class="footer-bottom">
-      <p>© 2025 Swamy Bakery. All rights reserved. Made with ❤️ in Kanyakumari.</p>
+      <p>© 2025 Swamy Bakery. All rights reserved. Made with <i class="ph ph-heart"></i> in Kanyakumari.</p>
       <div class="footer-trust">
-        <span class="trust-badge">🔒 Secure Payments</span>
-        <span class="trust-badge">🚚 Fast Delivery</span>
-        <span class="trust-badge">✅ FSSAI Certified</span>
+        <span class="trust-badge"><i class="ph ph-lock-key"></i> Secure Payments</span>
+        <span class="trust-badge"><i class="ph ph-truck"></i> Fast Delivery</span>
+        <span class="trust-badge"><i class="ph ph-check-circle"></i> FSSAI Certified</span>
       </div>
     </div>
   </div>
@@ -480,7 +481,7 @@
 <div class="login-required-modal" id="loginRequiredModal">
   <div class="login-required-box">
     <button class="login-required-close" onclick="closeLoginRequired()">✕</button>
-    <div class="login-required-icon">🔐</div>
+    <div class="login-required-icon"><i class="ph ph-lock-key"></i></div>
     <h3>Login Required</h3>
     <p>Please log in or create a free account to place your order. Your cart items will be saved!</p>
     <div class="login-required-actions">

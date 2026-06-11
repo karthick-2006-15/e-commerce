@@ -45,7 +45,7 @@ function updateClock() {
 }
 
 // ============================================================
-// ✅ FIX: LOGIN — always hits the API to get a real JWT token
+// <i class="ph ph-check-circle"></i> FIX: LOGIN — always hits the API to get a real JWT token
 // ============================================================
 async function adminLogin() {
   const email = document.getElementById('loginEmail').value.trim();
@@ -73,7 +73,7 @@ async function adminLogin() {
     const data = await res.json();
 
     if (data.token) {
-      // ✅ Store the real JWT token
+      // <i class="ph ph-check-circle"></i> Store the real JWT token
       adminToken = data.token;
       localStorage.setItem('admin_token', adminToken);
 
@@ -82,7 +82,7 @@ async function adminLogin() {
       }
 
       showDashboard();
-      toast('Welcome back, Admin! 🎉', 'green');
+      toast('Welcome back, Admin! <i class="ph ph-confetti"></i>', 'green');
     } else {
       errEl.textContent = data.message || 'Invalid credentials';
       errEl.style.color = 'var(--red)';
@@ -203,7 +203,7 @@ async function loadDashboard() {
             <td>${statusBadge(o.status)}</td>
             <td>${formatDate(o.createdAt)}</td>
           </tr>`).join('')
-      : '<tr><td colspan="5"><div class="empty"><div class="icon">📦</div><p>No orders in database yet</p></div></td></tr>';
+      : '<tr><td colspan="5"><div class="empty"><div class="icon"><i class="ph ph-package"></i></div><p>No orders in database yet</p></div></td></tr>';
 
   } catch(e) {
     console.error('Dashboard load error:', e);
@@ -249,7 +249,7 @@ function renderProducts(list) {
   document.getElementById('productCount').textContent = list.length;
   document.getElementById('productsTable').innerHTML = list.length ? list.map(p => `
     <tr>
-      <td><div class="product-cell"><div class="product-thumb">${p.image ? `<img src="${p.image}" alt="${p.name}" onerror="this.parentNode.innerHTML='${(p.emoji||'🍰').replace(/'/g,"\\'")}'"/>` : (p.emoji||'🍰')}</div><div class="td-name">${p.name}</div></div></td>
+      <td><div class="product-cell"><div class="product-thumb">${p.image ? `<img src="${p.image}" alt="${p.name}" onerror="this.parentNode.innerHTML='${(p.emoji||'<i class="ph ph-cake"></i>').replace(/'/g,"\\'")}'"/>` : (p.emoji||'<i class="ph ph-cake"></i>')}</div><div class="td-name">${p.name}</div></div></td>
       <td><span class="badge badge-blue">${p.category}</span></td>
       <td style="color:var(--orange);font-weight:700">₹${p.price}</td>
       <td><span style="text-decoration:line-through;color:var(--text3)">₹${p.oldPrice||'-'}</span></td>
@@ -257,7 +257,7 @@ function renderProducts(list) {
       <td>⭐ ${p.rating||'4.5'}</td>
       <td><div class="action-btns">
         <button class="icon-btn icon-btn-edit" onclick="openProductModal(${p.id||"'"+p._id+"'"})">✏️</button>
-        <button class="icon-btn icon-btn-del" onclick="deleteProduct(${p.id||"'"+p._id+"'"})">🗑️</button>
+        <button class="icon-btn icon-btn-del" onclick="deleteProduct(${p.id||"'"+p._id+"'"})"><i class="ph ph-trash"></i></button>
       </div></td>
     </tr>`).join('') : '<tr><td colspan="7"><div class="empty"><div class="icon">🧁</div><p>No products found</p></div></td></tr>';
 }
@@ -330,7 +330,7 @@ async function saveProduct() {
     weight:    '', // weight handled on frontend via selector
     badge:     document.getElementById('p-badge').value.trim(),
     rating:    parseFloat(document.getElementById('p-rating').value) || 4.5,
-    emoji:     document.getElementById('p-emoji').value.trim() || '🍰',
+    emoji:     document.getElementById('p-emoji').value.trim() || '<i class="ph ph-cake"></i>',
     image:     document.getElementById('p-image').value.trim() || '',
     desc:      document.getElementById('p-desc').value.trim(),
     ingredients: document.getElementById('p-ingredients').value.trim(),
@@ -416,10 +416,10 @@ function renderOrders(list) {
       <td>${statusBadge(o.status)}</td>
       <td>${formatDate(o.createdAt || o.date)}</td>
       <td><div class="action-btns">
-        <button class="icon-btn icon-btn-view" onclick="viewOrder('${o.orderId || o.id || o._id}')">👁️</button>
+        <button class="icon-btn icon-btn-view" onclick="viewOrder('${o.orderId || o.id || o._id}')"><i class="ph ph-eye"></i></button>
       </div></td>
     </tr>`).join('') :
-    '<tr><td colspan="8"><div class="empty"><div class="icon">📦</div><p>No orders found in database</p></div></td></tr>';
+    '<tr><td colspan="8"><div class="empty"><div class="icon"><i class="ph ph-package"></i></div><p>No orders found in database</p></div></td></tr>';
 }
 
 function searchOrders(q) {
@@ -443,12 +443,12 @@ function viewOrder(orderId) {
       <div>
         <div style="font-size:0.72rem;color:var(--text2);text-transform:uppercase;margin-bottom:4px">Update Status</div>
         <select id="orderStatusSel" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px 10px;color:var(--text);font-family:'DM Sans',sans-serif;width:100%;font-size:0.88rem">
-          <option value="confirmed"        ${(o.status||'confirmed')==='confirmed'        ?'selected':''}>✅ Confirmed</option>
-          <option value="preparing"        ${o.status==='preparing'        ?'selected':''}>👨‍🍳 Preparing</option>
-          <option value="packed"           ${o.status==='packed'           ?'selected':''}>📦 Packed</option>
-          <option value="out_for_delivery" ${o.status==='out_for_delivery' ?'selected':''}>🚚 Out for Delivery</option>
-          <option value="delivered"        ${o.status==='delivered'        ?'selected':''}>🏠 Delivered</option>
-          <option value="cancelled"        ${o.status==='cancelled'        ?'selected':''}>❌ Cancelled</option>
+          <option value="confirmed"        ${(o.status||'confirmed')==='confirmed'        ?'selected':''}><i class="ph ph-check-circle"></i> Confirmed</option>
+          <option value="preparing"        ${o.status==='preparing'        ?'selected':''}><i class="ph ph-chef-hat"></i> Preparing</option>
+          <option value="packed"           ${o.status==='packed'           ?'selected':''}><i class="ph ph-package"></i> Packed</option>
+          <option value="out_for_delivery" ${o.status==='out_for_delivery' ?'selected':''}><i class="ph ph-truck"></i> Out for Delivery</option>
+          <option value="delivered"        ${o.status==='delivered'        ?'selected':''}><i class="ph ph-house"></i> Delivered</option>
+          <option value="cancelled"        ${o.status==='cancelled'        ?'selected':''}><i class="ph ph-x-circle"></i> Cancelled</option>
         </select>
       </div>
       <div>
@@ -463,7 +463,7 @@ function viewOrder(orderId) {
         <strong>${o.address.firstName} ${o.address.lastName||''}</strong><br>
         ${o.address.line1||''}${o.address.line2?', '+o.address.line2:''}<br>
         ${o.address.city||''}, ${o.address.state||''} – ${o.address.pincode||''}<br>
-        📞 ${o.address.phone||''}
+        <i class="ph ph-phone"></i> ${o.address.phone||''}
       </div>
     </div>` : ''}
     <div style="background:var(--surface2);border-radius:var(--radius);padding:1rem">
@@ -481,7 +481,7 @@ function viewOrder(orderId) {
 }
 
 // ============================================================
-// ✅ FIX: updateOrderStatus — properly saves to DB with token
+// <i class="ph ph-check-circle"></i> FIX: updateOrderStatus — properly saves to DB with token
 // ============================================================
 async function updateOrderStatus() {
   const newStatus = document.getElementById('orderStatusSel')?.value;
@@ -515,7 +515,7 @@ async function updateOrderStatus() {
     if (o) o.status = newStatus;
     renderOrders(allOrders);
 
-    toast('✅ Order status updated to: ' + newStatus.replace(/_/g,' '), 'green');
+    toast('<i class="ph ph-check-circle"></i> Order status updated to: ' + newStatus.replace(/_/g,' '), 'green');
     closeModal('orderModal');
   } catch (e) {
     toast('Network error: ' + e.message, 'red');
@@ -547,7 +547,7 @@ function renderCustomers(list) {
       <td><span class="badge badge-orange">${u.orders || 0} orders</span></td>
       <td>${formatDate(u.createdAt)}</td>
       <td><div class="action-btns">
-        <button class="icon-btn icon-btn-view" onclick="toast('Customer: ${u.name}')">👁️</button>
+        <button class="icon-btn icon-btn-view" onclick="toast('Customer: ${u.name}')"><i class="ph ph-eye"></i></button>
       </div></td>
     </tr>`).join('') : '<tr><td colspan="6"><div class="empty"><div class="icon">👥</div><p>No customers yet</p></div></td></tr>';
 }
@@ -590,12 +590,12 @@ function renderCategories() {
         <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem;text-align:center;position:relative;overflow:hidden">
           <div style="width:72px;height:72px;border-radius:50%;margin:0 auto 0.8rem;overflow:hidden;background:var(--surface3);display:flex;align-items:center;justify-content:center;border:2px solid var(--border2)">
             ${imgSrc
-              ? `<img src="${imgSrc}" alt="${c.name}" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display='none';this.nextSibling.style.display='flex'"/><span style="display:none;font-size:2rem;width:100%;height:100%;align-items:center;justify-content:center">${c.emoji||'🍰'}</span>`
-              : `<span style="font-size:2rem">${c.emoji||'🍰'}</span>`}
+              ? `<img src="${imgSrc}" alt="${c.name}" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display='none';this.nextSibling.style.display='flex'"/><span style="display:none;font-size:2rem;width:100%;height:100%;align-items:center;justify-content:center">${c.emoji||'<i class="ph ph-cake"></i>'}</span>`
+              : `<span style="font-size:2rem">${c.emoji||'<i class="ph ph-cake"></i>'}</span>`}
           </div>
           <div style="font-weight:600;color:var(--text);margin-bottom:4px">${c.name}</div>
           <div style="font-size:0.75rem;color:var(--text2)">${count} product${count!==1?'s':''}</div>
-          <button class="icon-btn icon-btn-del" style="position:absolute;top:8px;right:8px" onclick="deleteCategory('${c._id}')">🗑️</button>
+          <button class="icon-btn icon-btn-del" style="position:absolute;top:8px;right:8px" onclick="deleteCategory('${c._id}')"><i class="ph ph-trash"></i></button>
         </div>`;
       }).join('')
     : '<div class="empty" style="grid-column:1/-1"><div class="icon">🗂️</div><p>No categories yet. Add one!</p></div>';
@@ -644,7 +644,7 @@ function removeCatImage() {
 
 async function saveCategory() {
   const name  = document.getElementById('cat-name').value.trim();
-  const emoji = document.getElementById('cat-emoji').value.trim() || '📦';
+  const emoji = document.getElementById('cat-emoji').value.trim() || '<i class="ph ph-package"></i>';
   if (!name) { toast('Category name required', 'red'); return; }
   const urlFieldValue = document.getElementById('cat-img-url').value.trim();
   const image = catImageData || (urlFieldValue.startsWith('http') ? urlFieldValue : '');
@@ -708,7 +708,7 @@ function renderCoupons() {
       <td>${c.active ? '<span class="badge badge-green">Active</span>' : '<span class="badge badge-red">Inactive</span>'}</td>
       <td><div class="action-btns">
         <button class="icon-btn icon-btn-edit" title="${c.active?'Deactivate':'Activate'}" onclick="toggleCoupon('${c._id}',${!c.active})">${c.active?'⏸️':'▶️'}</button>
-        <button class="icon-btn icon-btn-del" onclick="deleteCoupon('${c._id}')">🗑️</button>
+        <button class="icon-btn icon-btn-del" onclick="deleteCoupon('${c._id}')"><i class="ph ph-trash"></i></button>
       </div></td>
     </tr>`).join('')
     : '<tr><td colspan="7" style="text-align:center;padding:2rem;color:var(--text2)">No coupons yet. Create one!</td></tr>';
@@ -836,7 +836,7 @@ document.querySelectorAll('.modal-overlay').forEach(m => m.addEventListener('cli
 // ============================================================
 function toast(msg, type = 'default') {
   const el = document.getElementById('toast');
-  const icons = { green: '✅', red: '❌', default: 'ℹ️' };
+  const icons = { green: '<i class="ph ph-check-circle"></i>', red: '<i class="ph ph-x-circle"></i>', default: 'ℹ️' };
   el.innerHTML = `<span>${icons[type]||'ℹ️'}</span> ${msg}`;
   el.classList.add('show');
   setTimeout(() => el.classList.remove('show'), 3500);
@@ -871,8 +871,8 @@ function mockCustomers() {
 
 function localProducts() {
   return [
-    {id:1,name:'Black Forest Cake',category:'Cakes',price:549,oldPrice:699,weight:'500g',emoji:'🎂',badge:'Best Seller',rating:4.8},
-    {id:2,name:'Butter Cookies Box',category:'Cookies',price:199,oldPrice:249,weight:'250g',emoji:'🍪',badge:'10% Off',rating:4.6},
+    {id:1,name:'Black Forest Cake',category:'Cakes',price:549,oldPrice:699,weight:'500g',emoji:'<i class="ph ph-cake"></i>',badge:'Best Seller',rating:4.8},
+    {id:2,name:'Butter Cookies Box',category:'Cookies',price:199,oldPrice:249,weight:'250g',emoji:'<i class="ph ph-cookie"></i>',badge:'10% Off',rating:4.6},
     {id:3,name:'Whole Wheat Bread',category:'Breads',price:65,oldPrice:75,weight:'400g',emoji:'🍞',badge:'Fresh',rating:4.5},
   ];
 }

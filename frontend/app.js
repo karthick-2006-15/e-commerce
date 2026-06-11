@@ -140,7 +140,7 @@ async function initHome() {
     const data = await res.json();
     if (data.categories && data.categories.length) {
       CATEGORIES = data.categories.map(c => ({
-        name: c.name, image: c.image || '', emoji: c.emoji || '📦',
+        name: c.name, image: c.image || '', emoji: c.emoji || '<i class="ph ph-package"></i>',
         count: allProducts.filter(p => p.category === c.name).length || 0
       }));
     }
@@ -151,11 +151,10 @@ async function initHome() {
     `<div class="category-card" onclick="filterByCategory('${c.name}')">
       ${c.image
         ? `<img src="${c.image}" alt="${c.name}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
-           <div style="display:none;width:100%;height:100%;align-items:center;justify-content:center;font-size:3rem;background:var(--cream2)">${c.emoji||'📦'}</div>`
-        : `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:3.5rem;background:var(--cream2)">${c.emoji||'📦'}</div>`
+           <div style="display:none;width:100%;height:100%;align-items:center;justify-content:center;font-size:3rem;background:var(--cream2);color:var(--brown)"><i class="ph ph-package"></i></div>`
+        : `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:3.5rem;background:var(--cream2);color:var(--brown)"><i class="ph ph-package"></i></div>`
       }
       <div class="category-overlay">
-        <div class="cat-emoji">${c.emoji||'📦'}</div>
         <div class="cat-name">${c.name}</div>
         <div class="cat-count">${c.count} item${c.count !== 1 ? 's' : ''}</div>
         <div class="cat-arrow">›</div>
@@ -261,8 +260,8 @@ function productCard(p) {
     <div class="product-card-img" onclick="openProduct('${pid}')">
       ${p.badge ? `<div class="product-badge">${p.badge}</div>` : ''}
       ${p.image
-        ? `<img src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.onerror=null;this.parentElement.innerHTML='🍿';" style="object-fit:cover;width:100%;height:100%;"/>`
-        : `<div class="img-fallback">🍿</div>`}
+        ? `<img src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.onerror=null;this.parentElement.innerHTML='<i class="ph ph-popcorn"></i>';" style="object-fit:cover;width:100%;height:100%;"/>`
+        : `<div class="img-fallback"><i class="ph ph-popcorn"></i></div>`}
       <div class="product-card-img-overlay"></div>
       <button class="wishlist-btn ${wishlisted ? 'active' : ''}" onclick="toggleWishlist(event,'${pid}')">
         <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
@@ -309,7 +308,7 @@ async function renderShop() {
     const res = await fetch(`${API_BASE}/categories`);
     const data = await res.json();
     if (data.categories && data.categories.length) {
-      CATEGORIES = data.categories.map(c => ({ name: c.name, image: c.image || '', emoji: c.emoji || '📦', count: 0 }));
+      CATEGORIES = data.categories.map(c => ({ name: c.name, image: c.image || '', emoji: c.emoji || '<i class="ph ph-package"></i>', count: 0 }));
     }
   } catch {}
 
@@ -428,14 +427,14 @@ async function openProduct(pid, opts = {}) {
 
   const mainImg = document.getElementById('mainProductImg');
   if (p.image) {
-    mainImg.innerHTML = `<img src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.onerror=null;this.parentElement.innerHTML='🍿';this.parentElement.style.display='flex';this.parentElement.style.alignItems='center';this.parentElement.style.justifyContent='center';this.parentElement.style.fontSize='4rem';"/>`;
+    mainImg.innerHTML = `<img src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.onerror=null;this.parentElement.innerHTML='<i class="ph ph-popcorn"></i>';this.parentElement.style.display='flex';this.parentElement.style.alignItems='center';this.parentElement.style.justifyContent='center';this.parentElement.style.fontSize='4rem';"/>`;
   } else {
-    mainImg.innerHTML = `<div class="img-fallback" style="position:absolute;inset:0;font-size:4rem">🍿</div>`;
+    mainImg.innerHTML = `<div class="img-fallback" style="position:absolute;inset:0;font-size:4rem"><i class="ph ph-popcorn"></i></div>`;
   }
 
   document.getElementById('productThumbs').innerHTML = [0,1,2,3].map((i) =>
     `<div class="thumb ${i===0?'active':''}">
-      ${p.image ? `<img src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.onerror=null"/>` : '<div class="img-fallback">🍿</div>'}
+      ${p.image ? `<img src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.onerror=null"/>` : '<div class="img-fallback"><i class="ph ph-popcorn"></i></div>'}
     </div>`).join('');
 
   const off = p.oldPrice ? Math.round((1 - p.price / p.oldPrice) * 100) : 0;
@@ -474,7 +473,7 @@ async function openProduct(pid, opts = {}) {
       </div>
     </div>
     <div class="action-row">
-      <button class="btn-primary" style="flex:1;justify-content:center" onclick="addToCart('${getProductId(p)}',currentQty,currentDetailWeight);navigate('cart')">🛒 Add to Cart</button>
+      <button class="btn-primary" style="flex:1;justify-content:center" onclick="addToCart('${getProductId(p)}',currentQty,currentDetailWeight);navigate('cart')"><i class="ph ph-shopping-cart"></i> Add to Cart</button>
       <button class="btn-buy" onclick="addToCart('${getProductId(p)}',currentQty,currentDetailWeight);navigate('checkout')">Buy Now</button>
     </div>
     <div style="margin-top:1.2rem">
@@ -546,7 +545,7 @@ function addToCart(pid, qty = 1, weightGrams = 250) {
   if (existing) existing.qty = Math.min(10, existing.qty + qty);
   else cart.push({ key, id: String(pid), weight: weightGrams, price: computedPrice, qty });
   saveCart();
-  showToast('Added to cart! 🛒');
+  showToast('Added to cart! <i class="ph ph-shopping-cart"></i>');
 }
 
 function removeFromCart(keyOrId) {
@@ -590,7 +589,7 @@ function renderCart() {
   const el = document.getElementById('cartLayout');
   if (!el) return;
   if (cart.length === 0) {
-    el.innerHTML = `<div style="grid-column:1/-1"><div class="empty-state"><div class="empty-icon">🛒</div><h3>Your cart is empty</h3><p>Add some freshly made snacks!</p><button class="btn-primary" onclick="navigate('shop')">Browse Snacks →</button></div></div>`;
+    el.innerHTML = `<div style="grid-column:1/-1"><div class="empty-state"><div class="empty-icon"><i class="ph ph-shopping-cart"></i></div><h3>Your cart is empty</h3><p>Add some freshly made snacks!</p><button class="btn-primary" onclick="navigate('shop')">Browse Snacks →</button></div></div>`;
     return;
   }
   const { subtotal, delivery, discount, total } = getCartTotals();
@@ -602,7 +601,7 @@ function renderCart() {
         if (!p) return '';
         return `<div class="cart-item">
           <div class="cart-item-img">
-            ${p.image ? `<img src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.onerror=null;this.parentElement.innerHTML='🍿';this.parentElement.style.display='flex';this.parentElement.style.alignItems='center';this.parentElement.style.justifyContent='center';this.parentElement.style.fontSize='2rem';"/>` : '<div style="display:flex;align-items:center;justify-content:center;font-size:2rem;width:100%;height:100%">🍿</div>'}
+            ${p.image ? `<img src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.onerror=null;this.parentElement.innerHTML='<i class="ph ph-popcorn"></i>';this.parentElement.style.display='flex';this.parentElement.style.alignItems='center';this.parentElement.style.justifyContent='center';this.parentElement.style.fontSize='2rem';"/>` : '<div style="display:flex;align-items:center;justify-content:center;font-size:2rem;width:100%;height:100%"><i class="ph ph-popcorn"></i></div>'}
           </div>
           <div class="cart-item-info">
             <div class="cart-item-name">${p.name}</div>
@@ -646,14 +645,14 @@ async function applyPromo() {
     try { coupons = JSON.parse(localStorage.getItem('admin_coupons') || '[]'); } catch {}
   }
   const coupon = coupons.find(c => c.code === code && c.active !== false);
-  if (!coupon) { showToast('❌ Invalid or expired promo code'); return; }
+  if (!coupon) { showToast('<i class="ph ph-x-circle"></i> Invalid or expired promo code'); return; }
   const { subtotal } = getCartTotals();
   if (coupon.min && subtotal < coupon.min) { showToast(`Minimum order ₹${coupon.min} required for ${code}`); return; }
   const discount = coupon.type === 'percent'
     ? Math.round(subtotal * coupon.discount / 100)
     : Math.min(coupon.discount, subtotal);
   appliedCoupon = { code, discount };
-  showToast(`✅ ${code} applied! You save ₹${discount}`);
+  showToast(`<i class="ph ph-check-circle"></i> ${code} applied! You save ₹${discount}`);
   renderCart();
 }
 
@@ -670,7 +669,7 @@ async function loadActiveCouponBanner() {
       banner.innerHTML = `
         <h2>Ready to Order? Get ${label} Your Next Order!</h2>
         <p>Use code <strong style="color:var(--orange-light)">${c.code}</strong> at checkout${c.min ? ` (min ₹${c.min})` : ''}.</p>
-        <button class="btn-primary" onclick="navigate('shop')">Order Now 🛒</button>`;
+        <button class="btn-primary" onclick="navigate('shop')">Order Now <i class="ph ph-shopping-cart"></i></button>`;
     }
     document.querySelectorAll('.offer-tag').forEach(el => {
       el.innerHTML = `🏷️ Use <strong>${c.code}</strong> for ${label} your order!`;
@@ -710,7 +709,7 @@ function renderCheckout() {
         <div class="payment-options">
           <div class="payment-option selected">
             <input type="radio" name="pay" checked/>
-            <div class="payment-icon">💳</div>
+            <div class="payment-icon"><i class="ph ph-credit-card"></i></div>
             <div><div class="payment-label">UPI / Online Payment</div><div class="payment-sub">GPay, PhonePe, Card — via Razorpay</div></div>
           </div>
         </div>
@@ -723,7 +722,7 @@ function renderCheckout() {
         if (!p) return '';
         return `<div style="display:flex;gap:10px;align-items:center;margin-bottom:0.8rem">
           <div style="width:40px;height:40px;border-radius:8px;overflow:hidden;flex-shrink:0;background:var(--cream2)">
-            ${p.image ? `<img src="${p.image}" alt="${p.name}" loading="lazy" style="width:100%;height:100%;object-fit:cover"/>` : '<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:1.2rem">🍿</div>'}
+            ${p.image ? `<img src="${p.image}" alt="${p.name}" loading="lazy" style="width:100%;height:100%;object-fit:cover"/>` : '<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:1.2rem"><i class="ph ph-popcorn"></i></div>'}
           </div>
           <div style="flex:1;min-width:0"><div style="font-size:0.88rem;font-weight:600;color:var(--brown);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${p.name}</div><div style="font-size:0.75rem;color:var(--text2)">${c.weight >= 1000 ? (c.weight/1000)+'kg' : (c.weight||250)+'g'} × ${c.qty}</div></div>
           <div style="font-weight:600;color:var(--brown);font-size:0.9rem;flex-shrink:0">₹${(c.price||p.price)*c.qty}</div>
@@ -735,7 +734,7 @@ function renderCheckout() {
         <div class="summary-row total"><span>Total to Pay</span><span>₹${total}</span></div>
       </div>
       <button class="btn-primary" id="placeOrderBtn" style="width:100%;justify-content:center;margin-top:1rem" onclick="placeOrder()">Place Order ₹${total} →</button>
-      <p style="font-size:0.75rem;color:var(--text2);text-align:center;margin-top:0.8rem">🔒 Secured by Razorpay · 100% Safe</p>
+      <p style="font-size:0.75rem;color:var(--text2);text-align:center;margin-top:0.8rem"><i class="ph ph-lock-key"></i> Secured by Razorpay · 100% Safe</p>
     </div>`;
 }
 
@@ -907,7 +906,7 @@ async function renderMyOrders() {
     orders = getLocalOrderHistory();
   }
   if (orders.length === 0) {
-    listEl.innerHTML = `<div class="empty-state"><div class="empty-icon">📦</div><h3>No orders yet</h3><p>Your placed orders will appear here.</p><button class="btn-primary" onclick="navigate('shop')">Start Shopping →</button></div>`;
+    listEl.innerHTML = `<div class="empty-state"><div class="empty-icon"><i class="ph ph-package"></i></div><h3>No orders yet</h3><p>Your placed orders will appear here.</p><button class="btn-primary" onclick="navigate('shop')">Start Shopping →</button></div>`;
     return;
   }
   listEl.innerHTML = orders.map(o => {
@@ -922,12 +921,12 @@ async function renderMyOrders() {
     return `
       <div class="order-row" onclick="openOrderDetail('${orderId}')">
         <div class="order-row-thumb">
-          ${thumb ? `<img src="${thumb}" alt="Order" loading="lazy" onerror="this.onerror=null;this.parentElement.innerHTML='🍿';this.parentElement.style.display='flex';this.parentElement.style.alignItems='center';this.parentElement.style.justifyContent='center';this.parentElement.style.fontSize='1.5rem';"/>` : '<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:1.5rem">🍿</div>'}
+          ${thumb ? `<img src="${thumb}" alt="Order" loading="lazy" onerror="this.onerror=null;this.parentElement.innerHTML='<i class="ph ph-popcorn"></i>';this.parentElement.style.display='flex';this.parentElement.style.alignItems='center';this.parentElement.style.justifyContent='center';this.parentElement.style.fontSize='1.5rem';"/>` : '<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:1.5rem"><i class="ph ph-popcorn"></i></div>'}
         </div>
         <div class="order-row-info">
           <div class="order-row-id">Order #${orderId}</div>
           <div class="order-row-items">${itemNames}</div>
-          <div class="order-row-date">📅 ${dateStr} · ${(o.items||[]).length} item${(o.items||[]).length!==1?'s':''}</div>
+          <div class="order-row-date"><i class="ph ph-calendar"></i> ${dateStr} · ${(o.items||[]).length} item${(o.items||[]).length!==1?'s':''}</div>
         </div>
         <div class="order-row-right">
           <div class="order-row-total">₹${o.total||0}</div>
@@ -965,14 +964,14 @@ async function openOrderDetail(orderId) {
       } catch {}
     }
   }
-  if (!order) { contentEl.innerHTML = `<div class="empty-state"><div class="empty-icon">❌</div><h3>Order not found</h3><p>Could not load order #${orderId}</p></div>`; return; }
+  if (!order) { contentEl.innerHTML = `<div class="empty-state"><div class="empty-icon"><i class="ph ph-x-circle"></i></div><h3>Order not found</h3><p>Could not load order #${orderId}</p></div>`; return; }
   contentEl.innerHTML = renderOrderDetailHTML(order);
 }
 
 function renderOrderDetailHTML(o) {
   const orderId = o.id || o.orderId || '—';
   const statusSteps = ['confirmed','preparing','packed','shipped','delivered'];
-  const stepEmojis  = ['✅','👨‍🍳','📦','🚚','🏠'];
+  const stepEmojis  = ['<i class="ph ph-check-circle"></i>','<i class="ph ph-chef-hat"></i>','<i class="ph ph-package"></i>','<i class="ph ph-truck"></i>','<i class="ph ph-house"></i>'];
   const stepLabels  = ['Order Confirmed','Preparing','Packed','Out for Delivery','Delivered'];
   const stepTimes   = ['Received','~30 min','~1 hr','~2 hrs','Done'];
   const currentIdx  = Math.max(0, statusSteps.indexOf(o.status || 'confirmed'));
@@ -998,18 +997,18 @@ function renderOrderDetailHTML(o) {
           ${i<4?`<div style="flex:0 0 8px;height:3px;border-radius:2px;background:${i<currentIdx?'var(--orange)':'var(--cream2)'};margin-bottom:26px"></div>`:''}
         `).join('')}
       </div>
-      <div style="margin-top:1rem;background:var(--orange-pale);border-radius:var(--radius);padding:0.8rem 1rem;font-size:0.88rem;color:var(--brown);font-weight:600;text-align:center">🕐 ${stepLabels[currentIdx]} — ${stepTimes[currentIdx]}</div>
+      <div style="margin-top:1rem;background:var(--orange-pale);border-radius:var(--radius);padding:0.8rem 1rem;font-size:0.88rem;color:var(--brown);font-weight:600;text-align:center"><i class="ph ph-clock"></i> ${stepLabels[currentIdx]} — ${stepTimes[currentIdx]}</div>
     </div>
     <div class="order-details-grid">
       <div style="background:var(--white);border-radius:var(--radius-lg);padding:1.4rem;box-shadow:var(--shadow)">
         <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--orange);margin-bottom:1rem">Items Ordered</div>
-        ${(o.items||[]).map(i=>`<div style="display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--cream2)"><div style="width:40px;height:40px;border-radius:8px;background:var(--cream2);overflow:hidden;flex-shrink:0">${i.image?`<img src="${i.image}" loading="lazy" style="width:100%;height:100%;object-fit:cover" onerror="this.parentElement.innerHTML='🍿'"/>`:'<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:1rem">🍿</div>'}</div><div style="flex:1;min-width:0"><div style="font-size:0.85rem;font-weight:600;color:var(--brown);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${i.name}</div><div style="font-size:0.72rem;color:var(--text2)">${i.weight||''} × ${i.qty||1}</div></div><div style="font-weight:700;color:var(--brown);font-size:0.85rem;flex-shrink:0">₹${(i.price||0)*(i.qty||1)}</div></div>`).join('')}
+        ${(o.items||[]).map(i=>`<div style="display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--cream2)"><div style="width:40px;height:40px;border-radius:8px;background:var(--cream2);overflow:hidden;flex-shrink:0">${i.image?`<img src="${i.image}" loading="lazy" style="width:100%;height:100%;object-fit:cover" onerror="this.parentElement.innerHTML='<i class="ph ph-popcorn"></i>'"/>`:'<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:1rem"><i class="ph ph-popcorn"></i></div>'}</div><div style="flex:1;min-width:0"><div style="font-size:0.85rem;font-weight:600;color:var(--brown);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${i.name}</div><div style="font-size:0.72rem;color:var(--text2)">${i.weight||''} × ${i.qty||1}</div></div><div style="font-weight:700;color:var(--brown);font-size:0.85rem;flex-shrink:0">₹${(i.price||0)*(i.qty||1)}</div></div>`).join('')}
         <div style="display:flex;justify-content:space-between;font-size:0.82rem;color:var(--text2);margin-top:0.6rem"><span>Delivery</span><span style="color:${(o.deliveryCharge||0)===0?'green':'inherit'}">${(o.deliveryCharge||0)===0?'FREE':'₹'+(o.deliveryCharge)}</span></div>
         <div style="display:flex;justify-content:space-between;font-weight:700;color:var(--brown);margin-top:4px;padding-top:6px;border-top:1px solid var(--cream2)"><span>Total</span><span>₹${o.total||0}</span></div>
       </div>
       <div style="background:var(--white);border-radius:var(--radius-lg);padding:1.4rem;box-shadow:var(--shadow)">
         <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--orange);margin-bottom:1rem">Delivery Address</div>
-        ${o.address?`<div style="font-weight:600;color:var(--brown);margin-bottom:6px">${o.address.firstName||''} ${o.address.lastName||''}</div><div style="font-size:0.85rem;color:var(--text2);line-height:1.8">${o.address.line1||''}${o.address.line2?'<br>'+o.address.line2:''}<br>${o.address.city||''}, ${o.address.state||''} – ${o.address.pincode||''}<br>📞 ${o.address.phone||''}</div>`:'<p style="color:var(--text2);font-size:0.85rem">Address not available</p>'}
+        ${o.address?`<div style="font-weight:600;color:var(--brown);margin-bottom:6px">${o.address.firstName||''} ${o.address.lastName||''}</div><div style="font-size:0.85rem;color:var(--text2);line-height:1.8">${o.address.line1||''}${o.address.line2?'<br>'+o.address.line2:''}<br>${o.address.city||''}, ${o.address.state||''} – ${o.address.pincode||''}<br><i class="ph ph-phone"></i> ${o.address.phone||''}</div>`:'<p style="color:var(--text2);font-size:0.85rem">Address not available</p>'}
       </div>
     </div>
     <div style="text-align:center;padding-bottom:1.5rem"><button class="btn-primary" onclick="navigate('shop')" style="font-size:0.88rem">Continue Shopping →</button></div>`;
@@ -1026,7 +1025,7 @@ function renderOrderSuccess(order) {
     ? new Date(order.estimatedDelivery).toLocaleString('en-IN', { weekday:'short', day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit' })
     : 'Today by 6 PM';
   const statusSteps = ['confirmed','preparing','packed','shipped','delivered'];
-  const stepEmojis  = ['✅','👨‍🍳','📦','🚚','🏠'];
+  const stepEmojis  = ['<i class="ph ph-check-circle"></i>','<i class="ph ph-chef-hat"></i>','<i class="ph ph-package"></i>','<i class="ph ph-truck"></i>','<i class="ph ph-house"></i>'];
   const stepLabels  = ['Order Confirmed','Preparing in Kitchen','Packed & Ready','Out for Delivery','Delivered'];
   const currentIdx  = statusSteps.indexOf(order.status || 'confirmed');
   const body = document.getElementById('orderSuccessBody');
@@ -1047,26 +1046,26 @@ function renderOrderSuccess(order) {
     <div class="order-details-grid">
       <div style="background:var(--white);border-radius:var(--radius-lg);padding:1.5rem;box-shadow:var(--shadow)">
         <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--orange);margin-bottom:1rem">Items Ordered</div>
-        ${(order.items||[]).map(i => `<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--cream2)"><div style="width:42px;height:42px;border-radius:8px;background:var(--cream2);overflow:hidden;flex-shrink:0">${i.image?`<img src="${i.image}" loading="lazy" style="width:100%;height:100%;object-fit:cover"/>`:'<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:1.3rem">🍿</div>'}</div><div style="flex:1;min-width:0"><div style="font-size:0.88rem;font-weight:600;color:var(--brown);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${i.name}</div><div style="font-size:0.75rem;color:var(--text2)">${i.weight||''} × ${i.qty}</div></div><div style="font-weight:700;color:var(--brown);font-size:0.9rem;flex-shrink:0">₹${i.price*i.qty}</div></div>`).join('')}
+        ${(order.items||[]).map(i => `<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--cream2)"><div style="width:42px;height:42px;border-radius:8px;background:var(--cream2);overflow:hidden;flex-shrink:0">${i.image?`<img src="${i.image}" loading="lazy" style="width:100%;height:100%;object-fit:cover"/>`:'<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:1.3rem"><i class="ph ph-popcorn"></i></div>'}</div><div style="flex:1;min-width:0"><div style="font-size:0.88rem;font-weight:600;color:var(--brown);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${i.name}</div><div style="font-size:0.75rem;color:var(--text2)">${i.weight||''} × ${i.qty}</div></div><div style="font-weight:700;color:var(--brown);font-size:0.9rem;flex-shrink:0">₹${i.price*i.qty}</div></div>`).join('')}
         <div style="display:flex;justify-content:space-between;font-size:0.85rem;color:var(--text2);margin-top:0.6rem"><span>Delivery</span><span style="color:${(order.deliveryCharge||0)===0?'green':'inherit'}">${(order.deliveryCharge||0)===0?'FREE':'₹'+(order.deliveryCharge||0)}</span></div>
         <div style="display:flex;justify-content:space-between;font-size:1rem;font-weight:700;color:var(--brown);margin-top:0.6rem;padding-top:0.6rem;border-top:1px solid var(--cream2)"><span>Total Paid</span><span>₹${order.total||0}</span></div>
       </div>
       <div style="display:flex;flex-direction:column;gap:1.2rem">
         <div style="background:var(--white);border-radius:var(--radius-lg);padding:1.5rem;box-shadow:var(--shadow)">
           <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--orange);margin-bottom:1rem">Delivery Address</div>
-          ${order.address ? `<div style="font-size:0.9rem;color:var(--brown);font-weight:600;margin-bottom:4px">${order.address.firstName||''} ${order.address.lastName||''}</div><div style="font-size:0.85rem;color:var(--text2);line-height:1.7;word-break:break-word;">${order.address.line1||''}${order.address.line2?', '+order.address.line2:''}<br>${order.address.city||''}, ${order.address.state||''} – ${order.address.pincode||''}<br>📞 ${order.address.phone||''}</div>` : '<p style="color:var(--text2);font-size:0.85rem">Address not available</p>'}
+          ${order.address ? `<div style="font-size:0.9rem;color:var(--brown);font-weight:600;margin-bottom:4px">${order.address.firstName||''} ${order.address.lastName||''}</div><div style="font-size:0.85rem;color:var(--text2);line-height:1.7;word-break:break-word;">${order.address.line1||''}${order.address.line2?', '+order.address.line2:''}<br>${order.address.city||''}, ${order.address.state||''} – ${order.address.pincode||''}<br><i class="ph ph-phone"></i> ${order.address.phone||''}</div>` : '<p style="color:var(--text2);font-size:0.85rem">Address not available</p>'}
         </div>
         <div style="background:var(--white);border-radius:var(--radius-lg);padding:1.5rem;box-shadow:var(--shadow)">
           <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--orange);margin-bottom:1rem">Order Info</div>
           <div style="font-size:0.85rem;color:var(--text2);line-height:2">
-            <div>💳 Payment: <strong style="color:var(--brown)">${(order.payment?.method||'cod').toUpperCase()}</strong></div>
-            <div>📅 Est. Delivery: <strong style="color:var(--brown)">${est}</strong></div>
+            <div><i class="ph ph-credit-card"></i> Payment: <strong style="color:var(--brown)">${(order.payment?.method||'cod').toUpperCase()}</strong></div>
+            <div><i class="ph ph-calendar"></i> Est. Delivery: <strong style="color:var(--brown)">${est}</strong></div>
           </div>
         </div>
       </div>
     </div>
     <div style="display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;padding-bottom:2rem">
-      <button class="btn-primary" onclick="navigate('myorders')">📦 View My Orders</button>
+      <button class="btn-primary" onclick="navigate('myorders')"><i class="ph ph-package"></i> View My Orders</button>
       <button class="btn-outline" onclick="navigate('shop')">Continue Shopping</button>
     </div>`;
 }
@@ -1079,7 +1078,7 @@ function toggleWishlist(event, pid) {
   const key = String(pid);
   const idx = wishlist.indexOf(key);
   if (idx > -1) { wishlist.splice(idx,1); showToast('Removed from wishlist'); }
-  else { wishlist.push(key); showToast('Added to wishlist ❤️'); }
+  else { wishlist.push(key); showToast('Added to wishlist <i class="ph ph-heart"></i>'); }
   localStorage.setItem('swamy_wish', JSON.stringify(wishlist));
 }
 
@@ -1102,12 +1101,12 @@ function renderAbout() {
     grid.style.gap = '1.2rem';
   }
   const values = [
-    {icon:'🌾',title:'100% Fresh',    desc:'Every snack made fresh the same morning it reaches you.'},
-    {icon:'🧪',title:'Lab Tested',    desc:'Monthly NABL lab tests for quality and safety of all products.'},
-    {icon:'♻️',title:'Eco-Friendly',  desc:'Biodegradable packaging and zero single-use plastic.'},
-    {icon:'💝',title:'Community First',desc:'15% of profits go to "Hunger Free Chennai".'},
-    {icon:'🤝',title:'Farmer Direct', desc:'We source directly from Tamil Nadu farmers.'},
-    {icon:'🏅',title:'Award Winning', desc:'Best Snack Brand in Chennai — Times Food Award 2019, 2021, 2023.'},
+    {icon:'<i class="ph ph-plant"></i>',title:'100% Fresh',    desc:'Every snack made fresh the same morning it reaches you.'},
+    {icon:'<i class="ph ph-flask"></i>',title:'Lab Tested',    desc:'Monthly NABL lab tests for quality and safety of all products.'},
+    {icon:'<i class="ph ph-recycle"></i>',title:'Eco-Friendly',  desc:'Biodegradable packaging and zero single-use plastic.'},
+    {icon:'<i class="ph ph-gift"></i>',title:'Community First',desc:'15% of profits go to "Hunger Free Chennai".'},
+    {icon:'<i class="ph ph-handshake"></i>',title:'Farmer Direct', desc:'We source directly from Tamil Nadu farmers.'},
+    {icon:'<i class="ph ph-medal"></i>',title:'Award Winning', desc:'Best Snack Brand in Chennai — Times Food Award 2019, 2021, 2023.'},
   ];
   const el = document.getElementById('aboutValues');
   if (el) el.innerHTML = values.map(v =>
@@ -1124,7 +1123,7 @@ function submitContact() {
   if (!fname) { showToast('Please enter your name'); return; }
   if (!email || !email.includes('@')) { showToast('Please enter a valid email'); return; }
   if (!msg)   { showToast('Please write a message'); return; }
-  showToast("Message sent! We'll reply within 24 hours 🎉");
+  showToast("Message sent! We'll reply within 24 hours <i class="ph ph-confetti"></i>");
   ['cf-fname','cf-lname','cf-email','cf-msg'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
 }
 
@@ -1179,7 +1178,7 @@ async function submitLogin() {
       localStorage.setItem('swamy_token', authToken);
       localStorage.setItem('swamy_user', JSON.stringify(authUser));
       closeLogin();
-      showToast(`Welcome back, ${data.user.name}! 👋`);
+      showToast(`Welcome back, ${data.user.name}! <i class="ph ph-hand-waving"></i>`);
       updateLoginUI();
       if (cart.length > 0 && document.getElementById('page-checkout').classList.contains('active')) {
         renderCheckout();
@@ -1207,7 +1206,7 @@ async function submitSignup() {
       authToken = data.token; authUser = data.user;
       localStorage.setItem('swamy_token', authToken);
       localStorage.setItem('swamy_user', JSON.stringify(authUser));
-      closeLogin(); showToast(`Welcome to Swamy Bakery, ${data.user.name}! 🎉`); updateLoginUI();
+      closeLogin(); showToast(`Welcome to Swamy Bakery, ${data.user.name}! <i class="ph ph-confetti"></i>`); updateLoginUI();
     } else { showToast(data.message || 'Signup failed'); }
   } catch (err) { showToast(err.message || 'Could not connect to server'); }
   finally { btn.textContent = 'Create Account'; btn.disabled = false; }

@@ -6,6 +6,7 @@
 <title>Swamy Bakery — Admin Panel</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="/admin.css">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
 </head>
 <body>
 
@@ -19,7 +20,7 @@
     <div class="nav-section">Main</div>
     <div class="nav-item active" onclick="showPanel('dashboard',this)"><span class="icon">📊</span> Dashboard</div>
     <div class="nav-item" onclick="showPanel('products',this)"><span class="icon">🧁</span> Products</div>
-    <div class="nav-item" onclick="showPanel('orders',this)"><span class="icon">📦</span> Orders</div>
+    <div class="nav-item" onclick="showPanel('orders',this)"><span class="icon"><i class="ph ph-package"></i></span> Orders</div>
     <div class="nav-item" onclick="showPanel('customers',this)"><span class="icon">👥</span> Customers</div>
     <div class="nav-section">Store</div>
     <div class="nav-item" onclick="showPanel('categories',this)"><span class="icon">🗂️</span> Categories</div>
@@ -58,7 +59,7 @@
     <div id="loginScreen" style="display:flex;align-items:center;justify-content:center;min-height:calc(100vh - 60px)">
       <div style="background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius-lg);padding:2.5rem;width:100%;max-width:380px">
         <div style="text-align:center;margin-bottom:2rem">
-          <div style="font-size:3rem;margin-bottom:0.8rem">🍰</div>
+          <div style="font-size:3rem;margin-bottom:0.8rem"><i class="ph ph-cake"></i></div>
           <h2 style="font-size:1.4rem;color:var(--text);margin-bottom:0.3rem">Admin Login</h2>
           <p style="font-size:0.85rem;color:var(--text2)">Swamy Bakery Control Panel</p>
         </div>
@@ -79,7 +80,7 @@
           <div class="change" style="color:var(--green)">↑ Loading...</div>
         </div>
         <div class="stat-card" style="--accent-color:#4CAF50">
-          <div class="icon">📦</div>
+          <div class="icon"><i class="ph ph-package"></i></div>
           <div class="label">Total Orders</div>
           <div class="value" id="stat-orders">0</div>
           <div class="change" style="color:var(--green)">↑ Loading...</div>
@@ -268,7 +269,7 @@
       </div>
       <div class="form-row">
         <div class="form-group"><label>Rating (0–5)</label><input type="number" id="p-rating" placeholder="4.8" min="0" max="5" step="0.1"/></div>
-        <div class="form-group"><label>Emoji (fallback)</label><input type="text" id="p-emoji" placeholder="🎂" maxlength="4"/></div>
+        <div class="form-group"><label>Emoji (fallback)</label><input type="text" id="p-emoji" placeholder="<i class="ph ph-cake"></i>" maxlength="4"/></div>
       </div>
       <div class="form-group">
         <label>Product Image</label>
