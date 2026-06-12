@@ -877,7 +877,7 @@ footer::before {
 .footer-brand p { font-size: 0.88rem; color: rgba(253,248,240,0.60); line-height: 1.7; margin-top: 1rem; max-width: 240px; }
 .footer-col h4 { font-size: 0.72rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--cream2); margin-bottom: 1.2rem; }
 .footer-links { list-style: none; display: flex; flex-direction: column; gap: 0.7rem; }
-.footer-links a { font-size: 0.87rem; color: rgba(253,248,240,0.60); transition: color var(--t-fast); cursor: pointer; display: flex; align-items: center; gap: 5px; }
+.footer-links a { font-size: 0.87rem; color: rgba(253,248,240,0.85); transition: color var(--t-fast); cursor: pointer; display: flex; align-items: center; gap: 5px; }
 .footer-links a:hover { color: var(--orange2); }
 .footer-links a::before { content: '›'; opacity: 0; transition: opacity var(--t-fast); margin-right: -3px; }
 .footer-links a:hover::before { opacity: 1; }
