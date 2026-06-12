@@ -1203,3 +1203,71 @@ html, body { overflow-x: hidden; max-width: 100vw; }
 /* ── Backgrounds for sections ── */
 .bg-cream2 { background: var(--cream2); }
 .bg-white  { background: var(--white); }
+
+/* =========================================================
+   PDP (Product Detail Page)
+   ========================================================= */
+.pdp-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
+.pdp-gallery { border-radius: var(--r-xl); overflow: hidden; background: var(--white); box-shadow: var(--shadow-sm); aspect-ratio: 1; }
+.pdp-main-img-wrap { width: 100%; height: 100%; }
+.pdp-main-img-wrap img { width: 100%; height: 100%; object-fit: cover; }
+.pdp-info { display: flex; flex-direction: column; gap: 1.2rem; }
+.pdp-breadcrumbs { font-size: 0.85rem; color: var(--text2); }
+.pdp-breadcrumbs a { color: var(--brown); cursor: pointer; text-decoration: none; }
+.pdp-breadcrumbs a:hover { text-decoration: underline; }
+.pdp-title { font-size: 2.2rem; color: var(--brown); font-weight: 700; line-height: 1.1; font-family: 'Playfair Display', serif; }
+.pdp-meta { display: flex; align-items: center; gap: 0.8rem; font-size: 0.9rem; }
+.pdp-rating { color: var(--orange); font-weight: bold; }
+.pdp-reviews { color: var(--text2); }
+.pdp-pricing { display: flex; align-items: baseline; gap: 1rem; }
+.pdp-price { font-size: 2rem; font-weight: 700; color: var(--brown); }
+.pdp-old-price { font-size: 1.2rem; color: var(--text3); text-decoration: line-through; }
+.pdp-discount { font-size: 0.9rem; font-weight: 700; color: var(--orange); background: rgba(212,160,67,0.1); padding: 4px 8px; border-radius: var(--r-md); }
+.pdp-desc { font-size: 1.05rem; line-height: 1.7; color: var(--text); }
+.pdp-section-title { font-size: 1rem; color: var(--brown); font-weight: 600; margin-bottom: 0.8rem; }
+.pdp-weight-options { display: flex; gap: 0.8rem; flex-wrap: wrap; }
+.pdp-weight-options .weight-btn { flex: 1; min-width: 80px; font-size: 0.95rem; padding: 12px; border: 1px solid var(--glass-border); background: var(--white); border-radius: var(--r-md); cursor: pointer; transition: all 0.2s; }
+.pdp-weight-options .weight-btn.active { border-color: var(--orange); background: var(--orange); color: var(--white); font-weight: 600; }
+.pdp-actions { display: flex; gap: 1rem; align-items: center; margin-top: 1rem; }
+.pdp-qty { height: 52px; display: flex; align-items: center; border: 1px solid var(--glass-border); border-radius: var(--r-md); background: var(--white); }
+.pdp-qty button { width: 40px; height: 100%; border: none; background: transparent; font-size: 1.2rem; cursor: pointer; }
+.pdp-qty span { min-width: 30px; text-align: center; font-weight: 600; }
+.pdp-add-btn { height: 52px; flex: 1; font-size: 1.1rem; justify-content: center; }
+.pdp-wish-btn { height: 52px; width: 52px; border-radius: 12px; border: 1px solid var(--glass-border); background: var(--white); display: flex; align-items: center; justify-content: center; font-size: 1.4rem; cursor: pointer; color: var(--text2); transition: all 0.2s; }
+.pdp-wish-btn:hover { border-color: var(--orange); color: var(--orange); }
+.pdp-trust-box { display: flex; flex-direction: column; gap: 0.8rem; background: var(--white); padding: 1.2rem; border-radius: var(--r-lg); border: 1px solid var(--glass-border); margin-top: 1rem; }
+.pdp-trust-box .trust-item { display: flex; align-items: center; gap: 12px; font-size: 0.95rem; color: var(--text); font-weight: 500; }
+.pdp-trust-box .trust-item i { font-size: 1.2rem; color: var(--orange); }
+.pdp-details-tabs { display: flex; gap: 1rem; border-bottom: 1px solid var(--glass-border); margin-top: 2rem; }
+.pdp-tab { background: none; border: none; padding: 10px 0; font-size: 1rem; font-weight: 600; color: var(--text2); cursor: pointer; position: relative; }
+.pdp-tab.active { color: var(--brown); }
+.pdp-tab.active::after { content: ''; position: absolute; bottom: -1px; left: 0; right: 0; height: 2px; background: var(--brown); }
+.pdp-tab-content { padding: 1.5rem 0; font-size: 0.95rem; line-height: 1.7; color: var(--text); }
+
+@media (max-width: 900px) {
+  .pdp-layout { grid-template-columns: 1fr; gap: 2rem; }
+  .pdp-title { font-size: 1.8rem; }
+  .pdp-gallery { max-height: 400px; aspect-ratio: auto; }
+}
+
+/* WhatsApp Widget */
+.whatsapp-widget {
+  position: fixed;
+  bottom: 25px;
+  left: 25px;
+  background: #25D366;
+  color: white;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 15px rgba(37,211,102,0.4);
+  z-index: 999;
+  cursor: pointer;
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.whatsapp-widget:hover {
+  transform: scale(1.1) translateY(-5px);
+}

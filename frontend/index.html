@@ -12,12 +12,13 @@
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <link rel="stylesheet" href="/styles.css">
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.5/purify.min.js"></script>
 </head>
 <body>
 
 <!-- STICKY BOTTOM BAR (mobile only) -->
 <div class="sticky-bottom-bar" id="stickyBar">
-  <button class="sbb-cart" onclick="navigate('cart')">
+  <button class="sbb-cart" aria-label="View Cart" onclick="navigate('cart')">
     <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
     Cart
     <span class="sbb-cart-badge" id="sbbBadge">0</span>
@@ -200,6 +201,81 @@
       </div>
     </div>
   </section>
+</div>
+
+<!-- PRODUCT DETAIL PAGE -->
+<div class="page" id="page-product">
+  <div style="background:var(--cream2);border-bottom:1px solid var(--glass-border)">
+    <div style="max-width:1260px;margin:0 auto;padding:1rem 2rem">
+      <button class="btn-secondary" onclick="navigate('shop')">← Back to Shop</button>
+    </div>
+  </div>
+  <div style="max-width:1260px;margin:0 auto;padding:3rem 2rem">
+    <div class="pdp-layout">
+      <!-- Image Gallery -->
+      <div class="pdp-gallery">
+        <div class="pdp-main-img-wrap">
+          <img id="pdpMainImg" src="" alt="Product Image" loading="lazy"/>
+        </div>
+      </div>
+      <!-- Product Info -->
+      <div class="pdp-info">
+        <div id="pdpBreadcrumbs" class="pdp-breadcrumbs"></div>
+        <h1 id="pdpName" class="pdp-title"></h1>
+        <div class="pdp-meta">
+          <span class="pdp-rating" id="pdpRating"></span>
+          <span class="pdp-reviews" id="pdpReviewCount"></span>
+          <span class="trust-badge" style="margin-left:auto"><i class="ph ph-shield-check"></i> FSSAI Certified</span>
+        </div>
+        <div class="pdp-pricing">
+          <span class="pdp-price" id="pdpPrice"></span>
+          <span class="pdp-old-price" id="pdpOldPrice"></span>
+          <span class="pdp-discount" id="pdpDiscount"></span>
+        </div>
+        <p class="pdp-desc" id="pdpDesc"></p>
+        
+        <div class="pdp-section">
+          <h4 class="pdp-section-title">Select Weight</h4>
+          <div class="pdp-weight-options" id="pdpWeightOptions"></div>
+        </div>
+
+        <div class="pdp-actions">
+          <div class="qty-selector pdp-qty">
+            <button aria-label="Decrease Quantity" onclick="updatePdpQty(-1)">-</button>
+            <span id="pdpQtyDisplay">1</span>
+            <button aria-label="Increase Quantity" onclick="updatePdpQty(1)">+</button>
+          </div>
+          <button class="btn-primary pdp-add-btn" id="pdpAddBtn">Add to Cart</button>
+          <button class="btn-icon" id="pdpWishBtn" aria-label="Add to Wishlist"><i class="ph ph-heart"></i></button>
+        </div>
+
+        <div class="pdp-trust-box">
+          <div class="trust-item"><i class="ph ph-plant"></i> 100% Freshly Made</div>
+          <div class="trust-item"><i class="ph ph-truck"></i> Pan India Delivery</div>
+          <div class="trust-item"><i class="ph ph-lock-key"></i> Secure Payment</div>
+        </div>
+        
+        <div class="pdp-details-tabs">
+          <button class="pdp-tab active" onclick="switchPdpTab('ingredients')">Ingredients & Info</button>
+          <button class="pdp-tab" onclick="switchPdpTab('reviews')">Customer Reviews</button>
+        </div>
+        <div id="pdpTabIngredients" class="pdp-tab-content active">
+          <p><strong>Ingredients:</strong> Premium Gram Flour, Pure Desi Ghee, Refined Oil, Spices, Salt.</p>
+          <p><strong>Shelf Life:</strong> 30 Days from date of manufacture.</p>
+          <p><strong>Storage:</strong> Store in a cool, dry place. Keep airtight.</p>
+        </div>
+        <div id="pdpTabReviews" class="pdp-tab-content" style="display:none">
+          <div class="reviews-grid" id="pdpReviewsList"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Related Products -->
+    <div style="margin-top:5rem">
+      <h2 style="font-size:1.8rem;color:var(--brown);margin-bottom:1.5rem">Frequently Bought Together</h2>
+      <div class="products-grid" id="pdpRelatedProducts"></div>
+    </div>
+  </div>
 </div>
 
 <!-- SHOP -->
@@ -606,6 +682,52 @@
   </div>
 </div>
 
+<!-- RETURN & REFUND POLICY -->
+<div class="page" id="page-refund">
+  <div style="background:var(--cream2);padding:2.5rem 2rem;border-bottom:1px solid var(--glass-border)">
+    <div style="max-width:1000px;margin:0 auto">
+      <h1 style="font-size:2rem;color:var(--brown);margin-bottom:0.3rem">Return & Refund Policy</h1>
+      <p style="color:var(--text2)">Last Updated: June 2026</p>
+    </div>
+  </div>
+  <div style="max-width:800px;margin:0 auto;padding:3rem 2rem;line-height:1.8;color:var(--text);font-size:0.95rem">
+    <p>At Swamy Bakery, we take immense pride in the quality and freshness of our products. Due to the perishable nature of food items, we have a strict policy regarding returns and refunds.</p>
+    
+    <h3 style="color:var(--brown);margin:2rem 0 1rem;font-size:1.2rem">1. Returns</h3>
+    <p>We do not accept returns for any food items once they have been delivered successfully. This is to ensure strict hygiene and food safety standards are maintained for all our customers.</p>
+
+    <h3 style="color:var(--brown);margin:2rem 0 1rem;font-size:1.2rem">2. Refunds & Replacements</h3>
+    <p>Refunds or replacements will ONLY be considered under the following circumstances:</p>
+    <ul style="padding-left:1.5rem;margin-bottom:1.5rem">
+      <li>The product delivered is fundamentally damaged, stale, or completely unfit for consumption.</li>
+      <li>The packaging was severely compromised during transit resulting in damaged goods.</li>
+      <li>You received the wrong item(s) in your order.</li>
+    </ul>
+
+    <h3 style="color:var(--brown);margin:2rem 0 1rem;font-size:1.2rem">3. How to Request a Refund or Replacement</h3>
+    <p>If you face any of the issues mentioned above, you must contact us <strong>within 24 hours of delivery</strong>. To process your request, we require:</p>
+    <ul style="padding-left:1.5rem;margin-bottom:1.5rem">
+      <li>Your Order ID.</li>
+      <li>Clear photographs/videos of the damaged product and the packaging.</li>
+      <li>A brief description of the issue.</li>
+    </ul>
+    <p>Please send this information to <strong>swamybakery3@gmail.com</strong> or via WhatsApp at <strong>+91 9080729355</strong>.</p>
+
+    <h3 style="color:var(--brown);margin:2rem 0 1rem;font-size:1.2rem">4. Processing of Refunds</h3>
+    <p>Once your claim is received and verified by our team, we will notify you of the approval or rejection of your refund/replacement.</p>
+    <ul style="padding-left:1.5rem;margin-bottom:1.5rem">
+      <li>If approved for a replacement, a fresh product will be dispatched at no extra cost.</li>
+      <li>If approved for a refund, the amount will be processed back to your original payment method within 5-7 business days.</li>
+    </ul>
+
+    <h3 style="color:var(--brown);margin:2rem 0 1rem;font-size:1.2rem">5. Order Cancellations</h3>
+    <p>Orders can only be cancelled if they have not yet been dispatched from our facility. Once an order has been handed over to our courier partner, it cannot be cancelled. To request a cancellation, please contact us immediately after placing the order.</p>
+
+    <h3 style="color:var(--brown);margin:2rem 0 1rem;font-size:1.2rem">6. Contact Us</h3>
+    <p>For any further questions regarding your order, please reach out to us:<br>Email: swamybakery3@gmail.com<br>Phone/WhatsApp: +91 9080729355</p>
+  </div>
+</div>
+
     <hr class="footer-divider"/>
     <div class="footer-bottom">
       <p>© 2025 Swamy Bakery. All rights reserved. Made with <i class="ph ph-heart"></i> in Kanyakumari.<br>FSSAI Registration No: 22418083000777</p>
@@ -621,7 +743,7 @@
 <!-- LOGIN MODAL -->
 <div class="modal-overlay" id="loginModal">
   <div class="modal">
-    <button class="modal-close" onclick="closeLogin()">✕</button>
+    <button class="modal-close" aria-label="Close" onclick="closeLogin()">✕</button>
     <h2 id="modalTitle">Welcome Back!</h2>
     <p class="modal-sub" id="modalSub">Sign in to access your orders</p>
     <div class="auth-tabs">
@@ -649,7 +771,7 @@
 <!-- LOGIN REQUIRED MODAL -->
 <div class="login-required-modal" id="loginRequiredModal">
   <div class="login-required-box">
-    <button class="login-required-close" onclick="closeLoginRequired()">✕</button>
+    <button class="login-required-close" aria-label="Close" onclick="closeLoginRequired()">✕</button>
     <div class="login-required-icon"><i class="ph ph-lock-key"></i></div>
     <h3>Login Required</h3>
     <p>Please log in or create a free account to place your order. Your cart items will be saved!</p>
@@ -662,6 +784,11 @@
 </div>
 
 <div class="toast" id="toast"></div>
+
+<!-- WhatsApp Floating Widget -->
+<a href="https://wa.me/919080729355?text=Hi%20Swamy%20Bakery,%20I%20need%20some%20help%20with%20an%20order" target="_blank" class="whatsapp-widget" aria-label="Chat with us on WhatsApp">
+  <svg viewBox="0 0 24 24" fill="currentColor" width="30" height="30"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.029 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+</a>
 
 <script src="/app.js"></script>
 </body>

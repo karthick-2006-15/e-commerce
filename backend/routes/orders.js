@@ -1,7 +1,7 @@
 const express     = require('express');
 const orderRouter = express.Router();
 const Order       = require('../models/Order');
-const { auth, isAdmin } = require('../middleware/auth');
+const { auth, optionalAuth, isAdmin } = require('../middleware/auth');
 const axios       = require('axios');
 const crypto      = require('crypto');
 
@@ -97,7 +97,7 @@ const Product     = require('../models/Product');
 const Counter     = require('../models/Counter');
 
 // ── PLACE ORDER ───────────────────────────────────────────────
-orderRouter.post('/', auth, async (req, res) => {
+orderRouter.post('/', optionalAuth, async (req, res) => {
   try {
     const { items, address, payment, deliverySlot, mongoOrderId } = req.body;
 
@@ -171,7 +171,8 @@ orderRouter.post('/', auth, async (req, res) => {
 
     const order = await Order.create({
       orderId,
-      userId:            req.user.id,
+      userId:            req.user ? req.user.id : null,
+      guestInfo:         !req.user ? { email: address.email, phone: address.phone, name: address.firstName + ' ' + (address.lastName||'') } : null,
       items:             validatedItems,
       address,
       payment:           payment || { method: 'cod' },

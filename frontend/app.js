@@ -155,7 +155,7 @@ async function initHome() {
         : `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:3.5rem;background:var(--cream2);color:var(--brown)"><i class="ph ph-package"></i></div>`
       }
       <div class="category-overlay">
-        <div class="cat-name">${c.name}</div>
+        <div class="cat-name">${DOMPurify.sanitize(c.name)}</div>
         <div class="cat-count">${c.count} item${c.count !== 1 ? 's' : ''}</div>
         <div class="cat-arrow">›</div>
       </div>
@@ -167,10 +167,10 @@ async function initHome() {
       revEl.innerHTML = REVIEWS.map(r =>
         `<div class="review-card">
           <div class="review-stars">${r.stars}</div>
-          <p class="review-text">"${r.text}"</p>
+          <p class="review-text">"${DOMPurify.sanitize(r.text)}"</p>
           <div class="reviewer">
-            <div class="reviewer-avatar">${r.initials}</div>
-            <div><div class="reviewer-name">${r.name}</div><div class="reviewer-location">${r.location}</div></div>
+            <div class="reviewer-avatar">${DOMPurify.sanitize(r.initials)}</div>
+            <div><div class="reviewer-name">${DOMPurify.sanitize(r.name)}</div><div class="reviewer-location">${DOMPurify.sanitize(r.location)}</div></div>
           </div>
         </div>`).join('');
     } else {
@@ -178,15 +178,20 @@ async function initHome() {
     }
   }
 
+  // Render local fallback immediately to remove skeletons
+  allProducts = LOCAL_PRODUCTS;
+  renderProductGrid('featuredProducts', LOCAL_PRODUCTS.slice(0, 8));
+
+  // Try to fetch live products in background
   try {
     const data = await apiFetch('/products');
     if (data.success && data.products && data.products.length) {
       allProducts = data.products;
       CATEGORIES = CATEGORIES.map(c => ({ ...c, count: allProducts.filter(p => p.category === c.name).length }));
       renderProductGrid('featuredProducts', data.products.slice(0, 8));
-    } else throw new Error('no products');
-  } catch {
-    renderProductGrid('featuredProducts', LOCAL_PRODUCTS.slice(0, 8));
+    }
+  } catch (err) {
+    console.warn('Backend fetch failed/timeout, using local products');
   }
 
   loadActiveCouponBanner();
@@ -263,7 +268,7 @@ function productCard(p) {
         ? `<img src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.onerror=null;this.parentElement.innerHTML='<i class="ph ph-popcorn"></i>';" style="object-fit:cover;width:100%;height:100%;"/>`
         : `<div class="img-fallback"><i class="ph ph-popcorn"></i></div>`}
       <div class="product-card-img-overlay"></div>
-      <button class="wishlist-btn ${wishlisted ? 'active' : ''}" onclick="toggleWishlist(event,'${pid}')">
+      <button class="wishlist-btn ${wishlisted ? 'active' : ''}" aria-label="Toggle Wishlist" onclick="toggleWishlist(event,'${pid}')">
         <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
       </button>
     </div>
@@ -272,8 +277,8 @@ function productCard(p) {
         <span class="stars">${stars}</span>
         <span class="rating-count">${rating} (${p.reviews || 0})</span>
       </div>
-      <div class="product-category">${p.category}</div>
-      <div class="product-name">${p.name}</div>
+      <div class="product-category">${DOMPurify.sanitize(p.category)}</div>
+      <div class="product-name">${DOMPurify.sanitize(p.name)}</div>
       <div class="weight-selector">
         ${WEIGHT_OPTIONS.map(w =>
           '<button class="weight-btn ' + (w.grams === defaultGrams ? 'active' : '') + '"'
@@ -320,17 +325,24 @@ async function renderShop() {
         <label for="cat_${c.name}">${c.name}</label>
       </div>`).join('');
   }
+
+  // Render local fallback immediately
+  if (!allProducts || !allProducts.length) {
+    allProducts = [...LOCAL_PRODUCTS];
+    shopProductsFiltered = [...LOCAL_PRODUCTS];
+    renderShopGrid();
+  }
+
   try {
     const data = await apiFetch('/products');
     if (data.success && data.products) {
       allProducts = data.products;
       shopProductsFiltered = [...data.products];
-    } else throw new Error();
-  } catch {
-    allProducts = [...LOCAL_PRODUCTS];
-    shopProductsFiltered = [...LOCAL_PRODUCTS];
+      renderShopGrid();
+    }
+  } catch (err) {
+    console.warn('Backend fetch failed, using local products in shop');
   }
-  renderShopGrid();
 }
 
 function renderShopGrid() {
@@ -411,7 +423,14 @@ async function openProduct(pid, opts = {}) {
   }
   if (!p) return;
   currentProduct = p;
-  // Push product page into history (with pid so popstate can restore it)
+  
+  // Track recently viewed
+  let recent = JSON.parse(localStorage.getItem('swamy_recent') || '[]');
+  recent = recent.filter(id => id !== String(pid));
+  recent.unshift(String(pid));
+  if(recent.length > 8) recent.pop();
+  localStorage.setItem('swamy_recent', JSON.stringify(recent));
+
   if (!opts.fromPopstate) {
     history.pushState({ page: 'product', pid: String(pid) }, '', '#product-' + pid);
   }
@@ -422,110 +441,144 @@ async function openProduct(pid, opts = {}) {
   window.scrollTo(0, 0);
   updateCartBadge();
 
-  document.getElementById('productBreadcrumb').innerHTML =
-    `<a onclick="navigate('home')">Home</a><span>/</span><a onclick="navigate('shop')">Shop</a><span>/</span>${p.name}`;
+  // Populate Breadcrumbs
+  document.getElementById('pdpBreadcrumbs').innerHTML =
+    `<a onclick="navigate('home')">Home</a> <span style="margin:0 5px">/</span> <a onclick="navigate('shop')">Shop</a> <span style="margin:0 5px">/</span> ${p.name}`;
 
-  const mainImg = document.getElementById('mainProductImg');
+  // Image
+  const mainImg = document.getElementById('pdpMainImg');
   if (p.image) {
-    mainImg.innerHTML = `<img src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.onerror=null;this.parentElement.innerHTML='<i class="ph ph-popcorn"></i>';this.parentElement.style.display='flex';this.parentElement.style.alignItems='center';this.parentElement.style.justifyContent='center';this.parentElement.style.fontSize='4rem';"/>`;
+    mainImg.src = p.image;
+    mainImg.onerror = function() { this.src=''; this.parentElement.innerHTML='<div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:4rem;color:var(--text2)"><i class="ph ph-popcorn"></i></div>'; };
   } else {
-    mainImg.innerHTML = `<div class="img-fallback" style="position:absolute;inset:0;font-size:4rem"><i class="ph ph-popcorn"></i></div>`;
+    mainImg.parentElement.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:4rem;color:var(--text2)"><i class="ph ph-popcorn"></i></div>';
   }
 
-  document.getElementById('productThumbs').innerHTML = [0,1,2,3].map((i) =>
-    `<div class="thumb ${i===0?'active':''}">
-      ${p.image ? `<img src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.onerror=null"/>` : '<div class="img-fallback"><i class="ph ph-popcorn"></i></div>'}
-    </div>`).join('');
+  // Info
+  document.getElementById('pdpName').textContent = p.name;
+  
+  const rating = p.rating || 4.8;
+  document.getElementById('pdpRating').innerHTML = '<span style="color:var(--orange)">' + '★'.repeat(Math.floor(rating)) + (rating%1>=0.5?'½':'') + '</span> ' + rating;
+  document.getElementById('pdpReviewCount').textContent = `(${p.reviews || 0} Reviews)`;
+  
+  document.getElementById('pdpDesc').textContent = p.description || 'Freshly made in our kitchen, packed with care and delivered to your door.';
 
-  const off = p.oldPrice ? Math.round((1 - p.price / p.oldPrice) * 100) : 0;
-  document.getElementById('productInfoPanel').innerHTML = `
-    <div class="product-category">${p.category}</div>
-    <h1 style="font-size:clamp(1.1rem,3vw,2rem);color:var(--brown);line-height:1.2;margin-bottom:0.4rem">${p.name}</h1>
-    <div style="display:flex;align-items:center;gap:8px;margin-bottom:0.7rem">
-      <span style="color:#F5A05E;font-size:0.95rem">${'★'.repeat(Math.floor(p.rating||4))}${'☆'.repeat(5-Math.floor(p.rating||4))}</span>
-      <span style="font-size:0.85rem;font-weight:600;color:var(--brown)">${p.rating||'4.5'}</span>
-      <span style="font-size:0.8rem;color:var(--text2)">(${p.reviews||0} reviews)</span>
-    </div>
-    <div style="margin-bottom:0.8rem">
-      <div style="font-size:0.75rem;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px">Select Weight</div>
-      <div class="weight-selector" id="detailWeightSelector">
-        ${WEIGHT_OPTIONS.map(w => {
-          const wPrice = getPriceByWeight(getProductPricePerKg(p), w.grams);
-          return '<button class="weight-btn ' + (w.grams === 250 ? 'active' : '') + '"' +
-            ' onclick="selectDetailWeight(' + w.grams + ',this)"' +
-            ' data-grams="' + w.grams + '">' + w.label + '</button>';
-        }).join('')}
-      </div>
-    </div>
-    <div class="price-block">
-      <span class="price-main" id="detailPrice">₹${getPriceByWeight(getProductPricePerKg(p), 250)}</span>
-      ${p.oldPrice ? `<span class="price-old" id="detailOldPrice">₹${getPriceByWeight(p.oldPrice, 250)}</span>` : ''}
-      ${off > 0 ? `<span class="price-off" id="detailOff">${off}% OFF</span>` : ''}
-    </div>
-    <div style="font-size:0.8rem;color:var(--text2);margin-top:-0.6rem;margin-bottom:0.8rem">₹${getProductPricePerKg(p)} per kg</div>
-    <div class="offer-tag">🏷️ Use <strong>SWAMY10</strong> for 10% off your first order!</div>
-    <div class="qty-action-row" style="display:flex;align-items:center;gap:0.8rem;margin-bottom:0.9rem">
-      <div style="font-size:0.8rem;font-weight:600;color:var(--text2);white-space:nowrap">Qty:</div>
-      <div class="qty-selector">
-        <button class="qty-btn" onclick="changeQty(-1)">−</button>
-        <div class="qty-display" id="detailQty">1</div>
-        <button class="qty-btn" onclick="changeQty(1)">+</button>
-      </div>
-    </div>
-    <div class="action-row">
-      <button class="btn-primary" style="flex:1;justify-content:center" onclick="addToCart('${getProductId(p)}',currentQty,currentDetailWeight);navigate('cart')"><i class="ph ph-shopping-cart"></i> Add to Cart</button>
-      <button class="btn-buy" onclick="addToCart('${getProductId(p)}',currentQty,currentDetailWeight);navigate('checkout')">Buy Now</button>
-    </div>
-    <div style="margin-top:1.2rem">
-      <div class="tab-nav">
-        <button class="tab-btn active" onclick="setTab(this,'desc')">Description</button>
-        <button class="tab-btn" onclick="setTab(this,'ing')">Ingredients</button>
-      </div>
-      <div id="tabContent" style="padding:0.6rem 0">
-        <p style="color:var(--text2);line-height:1.75;font-size:0.9rem">${p.description||'Freshly made in our kitchen!'}</p>
-      </div>
-    </div>`;
+  // Pricing & Weights
+  renderPdpPricing();
+  
+  const wOpts = document.getElementById('pdpWeightOptions');
+  wOpts.innerHTML = WEIGHT_OPTIONS.map(w => 
+    `<button class="weight-btn ${w.grams === 250 ? 'active' : ''}" onclick="selectPdpWeight(${w.grams}, this)">${w.label}</button>`
+  ).join('');
 
+  // Qty
+  document.getElementById('pdpQtyDisplay').textContent = '1';
+
+  // Actions
+  document.getElementById('pdpAddBtn').onclick = () => {
+    addToCart(getProductId(p), currentQty, currentDetailWeight);
+    navigate('cart');
+  };
+  
+  const wishBtn = document.getElementById('pdpWishBtn');
+  wishBtn.innerHTML = wishlist.includes(String(pid)) ? '<i class="ph-fill ph-heart" style="color:var(--orange)"></i>' : '<i class="ph ph-heart"></i>';
+  wishBtn.onclick = (e) => toggleWishlist(e, String(pid));
+
+  // Reviews Tab
+  const reviewsList = document.getElementById('pdpReviewsList');
+  if (REVIEWS && REVIEWS.length) {
+    // just show a random subset of reviews for effect
+    const shuffled = [...REVIEWS].sort(()=> 0.5 - Math.random()).slice(0,3);
+    reviewsList.innerHTML = shuffled.map(r => 
+      `<div class="review-card" style="margin-bottom:1rem">
+        <div class="review-stars" style="color:var(--orange);margin-bottom:0.5rem">${r.stars}</div>
+        <p class="review-text" style="font-size:0.9rem;margin-bottom:0.5rem">"${DOMPurify.sanitize(r.text)}"</p>
+        <div style="font-size:0.8rem;color:var(--text2)">- ${DOMPurify.sanitize(r.name)}, ${DOMPurify.sanitize(r.location)}</div>
+      </div>`
+    ).join('');
+  } else {
+    reviewsList.innerHTML = '<p>No reviews yet. Be the first to review!</p>';
+  }
+
+  // Related Products
   const related = allProducts.filter(x => x.category === p.category && String(x._id||x.id) !== String(pid)).slice(0, 4);
-  renderProductGrid('relatedProducts', related);
+  renderProductGrid('pdpRelatedProducts', related);
+  
+  // Inject SEO JSON-LD
+  injectProductSchema(p);
 }
 
-function changeQty(delta) {
+function updatePdpQty(delta) {
   currentQty = Math.max(1, Math.min(10, currentQty + delta));
-  const el = document.getElementById('detailQty');
+  const el = document.getElementById('pdpQtyDisplay');
   if (el) el.textContent = currentQty;
 }
 
-function selectDetailWeight(grams, btn) {
+function selectPdpWeight(grams, btn) {
   currentDetailWeight = grams;
-  document.querySelectorAll('#detailWeightSelector .weight-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('#pdpWeightOptions .weight-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-  const p = currentProduct;
-  if (!p) return;
-  // Update price display
-  const pricePerKg = getProductPricePerKg(p);
-  const newPrice = getPriceByWeight(pricePerKg, grams);
-  const priceEl = document.getElementById('detailPrice');
-  if (priceEl) priceEl.textContent = '₹' + newPrice;
-  if (p.oldPrice) {
-    const oldPrice = getPriceByWeight(p.oldPrice, grams);
-    const oldEl = document.getElementById('detailOldPrice');
-    if (oldEl) oldEl.textContent = '₹' + oldPrice;
-    const offEl = document.getElementById('detailOff');
-    if (offEl) offEl.textContent = Math.round((1 - newPrice / oldPrice) * 100) + '% OFF';
+  renderPdpPricing();
+}
+
+function renderPdpPricing() {
+  if(!currentProduct) return;
+  const pricePerKg = getProductPricePerKg(currentProduct);
+  const newPrice = getPriceByWeight(pricePerKg, currentDetailWeight);
+  document.getElementById('pdpPrice').textContent = `₹${newPrice}`;
+  
+  if (currentProduct.oldPrice) {
+    const oldPrice = getPriceByWeight(currentProduct.oldPrice, currentDetailWeight);
+    document.getElementById('pdpOldPrice').textContent = `₹${oldPrice}`;
+    const off = Math.round((1 - newPrice / oldPrice) * 100);
+    document.getElementById('pdpDiscount').textContent = `${off}% OFF`;
+    document.getElementById('pdpDiscount').style.display = 'inline-block';
+  } else {
+    document.getElementById('pdpOldPrice').textContent = '';
+    document.getElementById('pdpDiscount').style.display = 'none';
   }
 }
 
-function setTab(el, type) {
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  el.classList.add('active');
-  const content = document.getElementById('tabContent');
-  if (!content) return;
-  if (type === 'desc') content.innerHTML = `<p style="color:var(--text2);line-height:1.8;font-size:0.92rem">${currentProduct?.description||'Freshly made in our kitchen!'}</p>`;
-  else {
-    const ingredients = currentProduct?.ingredients || 'Rice flour / Gram flour, Pure vegetable oil / Coconut oil, Rock salt, Cumin seeds, Sesame seeds, Red chilli, Curry leaves, Asafoetida.';
-    content.innerHTML = `<p style="color:var(--text2);line-height:1.8;font-size:0.92rem">${ingredients}<br><br><strong style="color:var(--brown)">✓ No preservatives · ✓ No artificial colours · ✓ FSSAI Certified</strong></p>`;
+function switchPdpTab(tab) {
+  document.querySelectorAll('.pdp-tab').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.pdp-tab-content').forEach(c => c.style.display = 'none');
+  
+  if(tab === 'ingredients') {
+    document.querySelectorAll('.pdp-tab')[0].classList.add('active');
+    document.getElementById('pdpTabIngredients').style.display = 'block';
+  } else {
+    document.querySelectorAll('.pdp-tab')[1].classList.add('active');
+    document.getElementById('pdpTabReviews').style.display = 'block';
   }
+}
+
+// SEO JSON-LD Injection
+function injectProductSchema(p) {
+  let script = document.getElementById('schema-product');
+  if(!script) {
+    script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.id = 'schema-product';
+    document.head.appendChild(script);
+  }
+  const price = getProductPricePerKg(p);
+  const schema = {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "name": p.name,
+    "image": p.image || window.location.origin + "/assets/placeholder.jpg",
+    "description": p.description || "Freshly made snacks",
+    "brand": { "@type": "Brand", "name": "Swamy Bakery" },
+    "offers": {
+      "@type": "Offer",
+      "url": window.location.href,
+      "priceCurrency": "INR",
+      "price": price,
+      "availability": "https://schema.org/InStock"
+    }
+  };
+  script.textContent = JSON.stringify(schema);
+  document.title = `${p.name} | Swamy Bakery`;
 }
 
 // ============================================================
@@ -607,9 +660,9 @@ function renderCart() {
             <div class="cart-item-name">${p.name}</div>
             <div class="cart-item-meta">${p.category} · ${c.weight >= 1000 ? (c.weight/1000)+'kg' : (c.weight||250)+'g'}</div>
             <div class="cart-qty">
-              <button class="cart-qty-btn" onclick="updateCartQty('${c.key || c.id}',-1)">−</button>
+              <button class="cart-qty-btn" aria-label="Decrease Quantity" onclick="updateCartQty('${c.key || c.id}',-1)">−</button>
               <div class="cart-qty-val">${c.qty}</div>
-              <button class="cart-qty-btn" onclick="updateCartQty('${c.key || c.id}',1)">+</button>
+              <button class="cart-qty-btn" aria-label="Increase Quantity" onclick="updateCartQty('${c.key || c.id}',1)">+</button>
             </div>
             <button class="remove-btn" onclick="removeFromCart('${c.key || c.id}')">✕ Remove</button>
           </div>
@@ -733,8 +786,22 @@ function renderCheckout() {
         <div class="summary-row"><span>Delivery</span><span>${delivery===0?'<span style="color:green;font-weight:600">FREE</span>':'₹'+delivery}</span></div>
         <div class="summary-row total"><span>Total to Pay</span><span>₹${total}</span></div>
       </div>
-      <button class="btn-primary" id="placeOrderBtn" style="width:100%;justify-content:center;margin-top:1rem" onclick="placeOrder()">Place Order ₹${total} →</button>
-      <p style="font-size:0.75rem;color:var(--text2);text-align:center;margin-top:0.8rem"><i class="ph ph-lock-key"></i> Secured by Razorpay · 100% Safe</p>
+      <button class="btn-primary" id="placeOrderBtn" style="width:100%;justify-content:center;margin-top:1.2rem;height:50px" onclick="placeOrder()">Pay ₹${total}</button>
+      
+      <div style="margin-top:1.5rem;display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;align-items:center;gap:10px;font-size:0.85rem;color:var(--text2)">
+          <i class="ph ph-shield-check" style="font-size:1.4rem;color:var(--green)"></i>
+          <span><strong>Secure Checkout</strong><br>SSL Encrypted Payment</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:0.85rem;color:var(--text2)">
+          <i class="ph ph-truck" style="font-size:1.4rem;color:var(--orange)"></i>
+          <span><strong>Fast Delivery</strong><br>Pan India Shipping</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:0.85rem;color:var(--text2)">
+          <i class="ph ph-plant" style="font-size:1.4rem;color:var(--brown)"></i>
+          <span><strong>FSSAI Certified</strong><br>100% Quality Assured</span>
+        </div>
+      </div>
     </div>`;
 }
 
@@ -745,7 +812,6 @@ function selectSlot(el, slot) {
 }
 
 async function placeOrder() {
-  if (!authToken || !authUser) { document.getElementById('loginRequiredModal').classList.add('open'); return; }
   const addr = {
     firstName: document.getElementById('ch-fname')?.value.trim(),
     lastName:  document.getElementById('ch-lname')?.value.trim(),
@@ -897,18 +963,28 @@ async function renderMyOrders() {
   showOrdersList();
   const listEl = document.getElementById('myOrdersList');
   listEl.innerHTML = `<div class="empty-state"><div class="spinner" style="border-top-color:var(--orange);border-color:var(--cream2);width:28px;height:28px;margin:0 auto 1rem"></div><p style="color:var(--text2)">Loading your orders...</p></div>`;
-  let orders = [];
+  // Render local orders immediately
+  let orders = getLocalOrderHistory();
+  if (orders.length > 0) {
+    renderOrderListHTML(listEl, orders);
+  }
+
   try {
     const data = await apiFetch('/orders/my-orders');
-    if (data.success && data.orders && data.orders.length) orders = data.orders;
-    else throw new Error('no orders from api');
-  } catch {
-    orders = getLocalOrderHistory();
+    if (data.success && data.orders) {
+      orders = data.orders;
+      renderOrderListHTML(listEl, orders);
+    }
+  } catch (err) {
+    console.warn('Backend fetch failed for orders, using local history');
   }
+
   if (orders.length === 0) {
     listEl.innerHTML = `<div class="empty-state"><div class="empty-icon"><i class="ph ph-package"></i></div><h3>No orders yet</h3><p>Your placed orders will appear here.</p><button class="btn-primary" onclick="navigate('shop')">Start Shopping →</button></div>`;
-    return;
   }
+}
+
+function renderOrderListHTML(listEl, orders) {
   listEl.innerHTML = orders.map(o => {
     const orderId = o.id || o.orderId || '—';
     const firstItem = (o.items || [])[0];
@@ -1123,7 +1199,7 @@ function submitContact() {
   if (!fname) { showToast('Please enter your name'); return; }
   if (!email || !email.includes('@')) { showToast('Please enter a valid email'); return; }
   if (!msg)   { showToast('Please write a message'); return; }
-  showToast("Message sent! We'll reply within 24 hours <i class="ph ph-confetti"></i>");
+  showToast(`Message sent! We'll reply within 24 hours <i class="ph ph-confetti"></i>`);
   ['cf-fname','cf-lname','cf-email','cf-msg'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
 }
 
@@ -1330,4 +1406,9 @@ function showHeroSlide(n) {
 initHome();
 updateCartBadge();
 updateLoginUI();
+
+const initialHash = window.location.hash.replace('#', '');
+if (initialHash && ['shop', 'cart', 'checkout', 'wishlist', 'about', 'myorders'].includes(initialHash)) {
+  navigate(initialHash);
+}
 

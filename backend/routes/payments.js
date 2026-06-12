@@ -1,14 +1,14 @@
 const express = require('express');
 const router = express.Router();
 const Razorpay = require('razorpay');
-const { auth } = require('../middleware/auth');
+const { auth, optionalAuth } = require('../middleware/auth');
 const crypto = require('crypto');
 const Order = require('../models/Order');
 
 const Product = require('../models/Product');
 const Counter = require('../models/Counter');
 
-router.post('/create-order', auth, async (req, res) => {
+router.post('/create-order', optionalAuth, async (req, res) => {
   try {
     const { orderData } = req.body;
     if (!orderData || !orderData.items || !orderData.items.length) {
@@ -55,7 +55,8 @@ router.post('/create-order', auth, async (req, res) => {
 
     const order = await Order.create({
       orderId,
-      userId: req.user.id,
+      userId: req.user ? req.user.id : null,
+      guestInfo: !req.user ? { email: orderData.address.email, phone: orderData.address.phone, name: orderData.address.firstName + ' ' + (orderData.address.lastName||'') } : null,
       items: validatedItems,
       address: orderData.address,
       payment: { method: 'online', razorpay_order_id: rzpOrder.id },
