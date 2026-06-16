@@ -15,20 +15,7 @@ const FALLBACK_CATEGORIES = [
 ];
 let CATEGORIES = [...FALLBACK_CATEGORIES];
 
-const LOCAL_PRODUCTS = [
-  { id:1,  name:'Crispy Murukku',  category:'Murukku', price:149, pricePerKg:596, oldPrice:189, weight:'250g', image:'https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=600&q=80', badge:'Best Seller', rating:4.8, reviews:312, description:'Traditional rice flour murukku with cumin and sesame seeds, fried to golden perfection.' },
-  { id:2,  name:'Kara Sev',        category:'Namkeen', price:109, pricePerKg:545, oldPrice:139, weight:'200g', image:'https://images.unsplash.com/photo-1604329760661-e71dc83f8f26?w=600&q=80', badge:'Spicy',      rating:4.7, reviews:198, description:'Spicy gram flour sev with black pepper and curry leaves.' },
-  { id:3,  name:'Bombay Mixture',  category:'Mixture', price:129, pricePerKg:516, oldPrice:159, weight:'250g', image:'https://images.unsplash.com/photo-1601050690597-df0568f70950?w=600&q=80', badge:'Fan Fav',    rating:4.9, reviews:502, description:'A crunchy medley of sev, peanuts, curry leaves and fried gram.' },
-  { id:4,  name:'Coconut Burfi',   category:'Sweets',  price:199, pricePerKg:663, oldPrice:249, weight:'300g', image:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80', badge:'Pure Ghee',  rating:4.8, reviews:267, description:'Soft, melt-in-mouth coconut burfi made with fresh grated coconut and cardamom.' },
-  { id:5,  name:'Boondi Ladoo',    category:'Ladoo',   price:179, pricePerKg:716, oldPrice:229, weight:'250g', image:'https://images.unsplash.com/photo-1645177628172-a94c1f96debb?w=600&q=80', badge:'Festive',   rating:4.9, reviews:445, description:'Golden boondi soaked in sugar syrup with cardamom and cashews.' },
-  { id:6,  name:'Banana Chips',    category:'Chips',   price:89,  pricePerKg:445, oldPrice:110, weight:'200g', image:'https://images.unsplash.com/photo-1566478989037-eec170784d0b?w=600&q=80', badge:'Kerala Style', rating:4.6, reviews:321, description:'Thin, crispy Kerala-style banana chips fried in pure coconut oil.' },
-  { id:7,  name:'Ribbon Pakoda',   category:'Murukku', price:139, pricePerKg:695, oldPrice:169, weight:'200g', image:'https://images.unsplash.com/photo-1567337710282-00832b415979?w=600&q=80', badge:'Crunchy',   rating:4.7, reviews:189, description:'Flat ribbon-shaped snack from rice and gram flour.' },
-  { id:8,  name:'Mysore Pak',      category:'Sweets',  price:249, pricePerKg:996, oldPrice:299, weight:'250g', image:'https://images.unsplash.com/photo-1571506165871-ee72a35bc9d4?w=600&q=80', badge:'Premium',   rating:4.9, reviews:378, description:'The legendary Mysore Pak — crumbly, ghee-laden, melt-in-mouth.' },
-  { id:9,  name:'Masala Peanuts',  category:'Namkeen', price:79,  pricePerKg:395, oldPrice:99,  weight:'200g', image:'https://images.unsplash.com/photo-1568702846914-96b305d2aaeb?w=600&q=80', badge:'10% Off',   rating:4.5, reviews:156, description:'Crunchy peanuts in spicy gram flour batter.' },
-  { id:10, name:'Besan Ladoo',     category:'Ladoo',   price:169, pricePerKg:676, oldPrice:209, weight:'250g', image:'https://images.unsplash.com/photo-1631459663000-4427b87d2bf3?w=600&q=80', badge:'Traditional', rating:4.8, reviews:289, description:'Nutty roasted besan combined with ghee and cardamom.' },
-  { id:11, name:'Tapioca Chips',   category:'Chips',   price:99,  pricePerKg:495, oldPrice:119, weight:'200g', image:'https://images.unsplash.com/photo-1576506542790-51244b486a6b?w=600&q=80', badge:'Crispy',    rating:4.4, reviews:112, description:'Thinly sliced tapioca chips with rock salt.' },
-  { id:12, name:'Chivda Mix',      category:'Mixture', price:119, pricePerKg:397, oldPrice:149, weight:'300g', image:'https://images.unsplash.com/photo-1609501676725-7186f017a4b7?w=600&q=80', badge:'Light',     rating:4.6, reviews:203, description:'Poha-based light and crunchy snack with peanuts.' },
-];
+
 
 const REVIEWS = [
   { stars: "★★★★★", text: "The Banana Chips are incredibly fresh and crispy! Just the right amount of salt, cooked in pure coconut oil. Tastes just like home.", initials: "PK", name: "Priya K.", location: "Chennai" },
@@ -51,7 +38,7 @@ function getMergedProducts() {
     const adminProds = JSON.parse(localStorage.getItem('admin_products') || 'null');
     if (adminProds && adminProds.length) return adminProds;
   } catch {}
-  return [...LOCAL_PRODUCTS];
+  return [];
 }
 
 let allProducts          = getMergedProducts();
@@ -178,9 +165,6 @@ async function initHome() {
     }
   }
 
-  // Render local fallback immediately to remove skeletons
-  allProducts = LOCAL_PRODUCTS;
-  renderProductGrid('featuredProducts', LOCAL_PRODUCTS.slice(0, 8));
 
   // Try to fetch live products in background
   try {
@@ -191,7 +175,7 @@ async function initHome() {
       renderProductGrid('featuredProducts', data.products.slice(0, 8));
     }
   } catch (err) {
-    console.warn('Backend fetch failed/timeout, using local products');
+    console.error('Backend fetch failed/timeout', err);
   }
 
   loadActiveCouponBanner();
@@ -326,12 +310,6 @@ async function renderShop() {
       </div>`).join('');
   }
 
-  // Render local fallback immediately
-  if (!allProducts || !allProducts.length) {
-    allProducts = [...LOCAL_PRODUCTS];
-    shopProductsFiltered = [...LOCAL_PRODUCTS];
-    renderShopGrid();
-  }
 
   try {
     const data = await apiFetch('/products');
@@ -341,7 +319,7 @@ async function renderShop() {
       renderShopGrid();
     }
   } catch (err) {
-    console.warn('Backend fetch failed, using local products in shop');
+    console.error('Backend fetch failed in shop', err);
   }
 }
 
@@ -585,8 +563,7 @@ function injectProductSchema(p) {
 // CART
 // ============================================================
 function findProduct(pid) {
-  return allProducts.find(p => String(p._id||p.id) === String(pid))
-      || LOCAL_PRODUCTS.find(p => String(p._id||p.id) === String(pid));
+  return allProducts.find(p => String(p._id||p.id) === String(pid));
 }
 
 function addToCart(pid, qty = 1, weightGrams = 250) {
